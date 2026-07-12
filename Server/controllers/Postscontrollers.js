@@ -8,23 +8,31 @@ import slugify from "slugify";
 
 // ✅ Get All Posts (Paginated)
 export const getAllPosts = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
 
-  const posts = await Posts.find()
-    .populate("user", "username")
-    .limit(limit)
-    .skip((page - 1) * limit)
-    .sort({ createdAt: -1 });
+    // Fetch posts, populate 'user', allow null user
+    const posts = await Posts.find()
+      .populate({ path: "user", select: "username" })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 });
 
-  const totalPosts = await Posts.countDocuments();
-  const hasMore = page * limit < totalPosts;
-  const nextPage = hasMore ? page + 1 : null;
+    const totalPosts = await Posts.countDocuments();
+    const hasMore = page * limit < totalPosts;
+    const nextPage = hasMore ? page + 1 : null;
 
-  // console.log(posts);
+    // console.log("🔍 Posts fetched:", posts.length, "posts on page", page);
+    // console.log("📊 Total posts:", totalPosts, "| Has more:", hasMore);
 
-  res.status(200).json({ posts, hasMore, nextPage });
+    res.status(200).json({ posts, hasMore, nextPage });
+  } catch (error) {
+    console.error("❌ Error fetching posts:", error.message);
+    res.status(500).json({ message: "Error fetching posts", error: error.message });
+  }
 };
+
 
 // ✅ Get Single Post
 export const getPost = async (req, res) => {

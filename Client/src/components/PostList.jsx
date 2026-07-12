@@ -36,9 +36,12 @@ const PostList = () => {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
   
-    console.log(data);
-    if (status === "loading") return "Loading...";
-    if (status === "error") return "Something went wrong!";
+  console.log("🔍 Query status:", status);
+  console.log("📊 Data:", data);
+  if (error) console.error("❌ Fetch error:", error.message);
+
+  if (status === "pending") return <div className="text-center py-8">Loading posts...</div>;
+  if (status === "error") return <div className="text-center py-8 text-red-600">Error: {error?.message || "Failed to load posts"}</div>;
 
   const allposts = data?.pages?.flatMap(page => page?.posts || []) || [];
 

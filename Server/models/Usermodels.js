@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
-const userchema = new mongoose.Schema(
+const userschema = new mongoose.Schema(
   {
     clerkId: {
       type: String,
@@ -33,4 +33,4 @@ const userchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Users", userchema);
+export default mongoose.model("Users", userschema, "users");

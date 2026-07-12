@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import ImageKit from "imagekit";
 import connectDB from "./lib/ConnectDB.js";
 import Users from "./routes/Userroutes.js";
@@ -16,8 +18,10 @@ const app = express();
 // ✅ CORS setup
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -29,16 +33,6 @@ app.use("/webhook", Webhookroutes);
 
 // ✅ JSON parser after webhook routes
 app.use(express.json());
-
-// ✅ Common headers
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 
 // ✅ Basic route
 app.get("/login", (req, res) => {
@@ -56,8 +50,13 @@ app.use((err, req, res, next) => {
   res.json({ message: err.message || "Something went wrong..." });
 });
 
-// ✅ Start server
-app.listen(3000, () => {
-  connectDB();
-  console.log("🚀 Server running on port 3000...");
-});
+// ✅ Start server after DB connection
+const start = async () => {
+  await connectDB();
+  const port = process.env.PORT || 4000;
+  app.listen(port, () => {
+    console.log(`🚀 Server running on port ${port}...`);
+  });
+};
+
+start();

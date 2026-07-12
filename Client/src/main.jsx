@@ -6,7 +6,7 @@ import MainLayout from "./layouts/MainLayout.jsx";
 
 import Home from "./routes/Home.jsx";
 import Login from "./routes/Login.jsx";
-import PostList from "./routes/PostList.jsx";
+import Postlist from "./routes/Postlist.jsx";
 import Register from "./routes/Register.jsx";
 import SinglePost from "./routes/SinglePost.jsx";
 import Write from "./routes/Write.jsx";
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/posts",
-        element: <PostList />,
+        element: <Postlist />,
       },
       {
         path: "/register",
