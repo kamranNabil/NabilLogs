@@ -49,7 +49,6 @@ Client/.env
 Server/node_modules/
 Server/.env
 
-# Misc
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# ngrok
+ngrok.yml
+*.ngrok.yml

@@ -60,10 +60,11 @@ const Comments = ({ postId }) => {
     }
 
     return (
-        <div className="flex flex-col gap-8 lg:w-3/5 mb-12">
+        <div id="comments" className="flex flex-col gap-8 lg:w-3/5 mb-12">
             <h1 className="text-xl text-gray-500 underline">Comments</h1>
             <form onSubmit={handleSubmit} className="flex items-center justify-between gap-8 w-full">
                 <textarea
+                    id="comment-textarea"
                     name="desc"
                     placeholder="Write a comment...."
                     className="flex-1 p-1 mb-8 border border-gray-300 rounded-xl"

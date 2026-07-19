@@ -53,6 +53,13 @@ export const deleteComment = async (req, res) => {
     });
   }
 
+  const role = req.auth.sessionClaims?.metadata?.role || "user"
+
+  if (role !== "admin") {
+    await Comments.findByIdAndDelete(req.params.id);
+    return res.status(200).json({ message: "Comment deleted successfully" });
+  }
+
   const user = await Users.findOne({
     clerkId: clerkUserId,
   });

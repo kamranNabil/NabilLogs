@@ -17,7 +17,7 @@ const PostMenuActions = ({ post }) => {
     queryKey: ['savedPosts', user?.id],
     queryFn: async () => {
       if (!user) return [];
-      
+
       try {
         const token = await getToken();
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/saved`, {
@@ -35,9 +35,24 @@ const PostMenuActions = ({ post }) => {
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: currentDbUser } = useQuery({
+    queryKey: ['currentUser', user?.id],
+    queryFn: async () => {
+      const token = await getToken();
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+    enabled: !!user,
+    staleTime: 5 * 60 * 1000,
+  });
+
   const isSaved = savedPosts?.some((p) => p === post._id) || false;
-  const isAdmin = user?.publicMetadata?.role === "admin" || false;
-  const isPostOwner = post?.user?.username === user?.username;
+  const isAdmin = currentDbUser?.role === "admin" || false;
+  const isPostOwner = post?.user?._id === currentDbUser?._id;
 
   const deleteMutation = useMutation({
     mutationFn: async () => {
@@ -81,15 +96,27 @@ const PostMenuActions = ({ post }) => {
   const featureMutation = useMutation({
     mutationFn: async () => {
       const token = await getToken();
-      return axios.patch(`${import.meta.env.VITE_API_URL}/posts/${post._id}/feature`, {}, {
+      const response = await axios.patch(`${import.meta.env.VITE_API_URL}/posts/${post._id}/feature`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      return response.data;
     },
-    onSuccess: () => {
-      setIsFeatured(!isFeatured);
+    onSuccess: (data) => {
+      setIsFeatured((prev) => !prev);
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["featuredPosts"] });
+      if (data?.isFeatured !== undefined) {
+        queryClient.setQueryData(["posts"], (oldData) => {
+          if (!oldData) return oldData;
+          return Array.isArray(oldData)
+            ? oldData.map((item) =>
+                item._id === post._id ? { ...item, isFeatured: data.isFeatured } : item
+              )
+            : oldData;
+        });
+      }
       toast.success(isFeatured ? "Post unfeatured!" : "Post featured!");
     },
     onError: (err) => {
@@ -114,20 +141,49 @@ const PostMenuActions = ({ post }) => {
     featureMutation.mutate();
   };
 
+  // ✅ NEW: scrolls down to the comments section and focuses the textarea
+  const handleAddComment = () => {
+    const commentsSection = document.getElementById("comments");
+    if (commentsSection) {
+      commentsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        document.getElementById("comment-textarea")?.focus();
+      }, 500);
+    }
+  };
+
   return (
     <div className="">
       <h1 className="mt-8 mb-4 text-sm font-medium">Actions</h1>
+
+      {/* ✅ NEW: Add a Comment action */}
+      <div onClick={handleAddComment} className="flex items-center gap-2 py-2 text-sm cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          width="20px"
+          height="20px"
+        >
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        <span>Add a Comment</span>
+      </div>
+
       {isPending ? (
         "Loading..."
       ) : error ? (
         "Saved posts fetching failed!"
       ) : (
         <div className="flex items-center gap-2 py-2 text-sm cursor-pointer" onClick={handleSave}>
-          {/* Save Icon */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 48 48"
-            width="20px"
+            width="20px "
             height="20px"
           >
             <path
@@ -141,7 +197,7 @@ const PostMenuActions = ({ post }) => {
         </div>
       )}
 
-      {user?.publicMetadata?.role === "admin" && (
+      {isAdmin && (
         <div onClick={handleFeature} className="flex items-center gap-2 py-2 text-sm cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +216,6 @@ const PostMenuActions = ({ post }) => {
 
       {user && (isPostOwner || isAdmin) && (
         <div onClick={handleDelete} className="flex items-center gap-2 py-2 text-sm cursor-pointer text-red-600 hover:text-red-800">
-          {/* Delete Icon (dustbin) */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
