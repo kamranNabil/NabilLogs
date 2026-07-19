@@ -13,11 +13,15 @@
   "description": "",
   "dependencies": {
     "@clerk/express": "^1.7.46",
+    "body-parser": "^2.3.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "imagekit": "^6.0.0",
     "mongoose": "^8.19.3",
-    "react-infinite-scroll-component": "^6.1.0"
+    "react-infinite-scroll-component": "^6.1.0",
+    "slugify": "^1.6.9",
+    "svix": "^1.98.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
