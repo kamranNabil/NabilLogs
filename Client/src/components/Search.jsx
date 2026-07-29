@@ -26,7 +26,7 @@ const Search = () => {
                 fill="none"
                 width="20"
                 height="20"
-                stroke="gray"
+                stroke="black"
             >
                 <circle cx="10.5" cy="10.5" r="7.5" />
                 <line x1="16.5" y1="16.5" x2="22" y2="22" />
@@ -34,7 +34,7 @@ const Search = () => {
             <input
                 type="text"
                 placeholder="Search a post..."
-                className="bg-transparent outline-none w-full min-w-0 placeholder:text-sm"
+                className="text-black-1000 placeholder:text-gray-100 bg-transparent outline-none w-full min-w-0 placeholder:text-sm"
                 onKeyPress={handleKeyPress}
             />
         </div>

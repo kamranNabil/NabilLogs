@@ -60,7 +60,7 @@ const Navbar = () => {
 
           <div className="flex flex-col gap-4">
             <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
-              Login 🫡
+              Login 
             </button>
             {/* <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
             Signup 🙌
@@ -79,7 +79,7 @@ const Navbar = () => {
           <Link to="/Login">
             <div className="flex gap-4">
               <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
-                Login🫡
+                Login
               </button>
               {/* <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
                 Signup 🙌
