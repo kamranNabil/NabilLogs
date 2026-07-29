@@ -9,25 +9,18 @@ const Home = () => {
     <div className="mt-4 flex flex-col gap-4">
       {/* Breadcrumb*/}
       <div className="flex gap-4">
-        <Link to="/">Home</Link>
-        <span>.</span>
+        {/* <Link to="/">Home</Link>
+        <span>.</span> */}
         <span className="text-blue-800">Blogs and Articles</span>
       </div>
-      {/* Introduction*/}
       <div className="flex items-center jsutify-between">
-        {/* titles */}
         <div className="">
           <h1 className="text-gray-700 text-xl md:text-3xl lg:text-5xl font-bold">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            Welcome to NabilLogs
           </h1>
-          <p className="mt-8 text-md md:text-xl">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque
-            nam aspernatur ea! Explicabo obcaecati qui sapiente architecto
-            iusto? Necessitatibus, porro ratione. Commodi nihil optio illo
-            accusantium numquam quae nostrum nisi? Aperiam eius consectetur in
-            impedit accusamus deserunt deleniti laborum praesentium? Id aperiam
-            omnis voluptatibus vero at. Nobis nesciunt in harum animi officia
-            et. Voluptate similique eligendi atque sapiente tempore deserunt.
+          <p className="mt-8 text-md md:text-xl text-gray-600">
+            Document your journey in software engineering, backend architecture,
+            and full-stack development. Explore articles, insights, and lessons learned.
           </p>
         </div>
         {/* Animated buttons */}

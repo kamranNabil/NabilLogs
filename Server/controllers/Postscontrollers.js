@@ -84,17 +84,21 @@ export const getAllPosts = async (req, res) => {
 
 // ✅ Get Single Post
 export const getPost = async (req, res) => {
-  const post = await Posts.findOne({ slug: req.params.slug }).populate("user", [
-    "username",
-    "img",
-    "role",
-  ]);
+  try {
+    const post = await Posts.findOne({ slug: req.params.slug }).populate(
+      "user",
+      ["username", "img", "role"],
+    );
 
-  if (!post) {
-    return res.status(404).json({ message: "Post not found" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(post);
+  } catch (err) {
+    console.error("Error fetching single post:", err);
+    res.status(500).json({ message: "Server error while retrieving post" });
   }
-
-  res.status(200).json(post);
 };
 
 // ✅ Create Post
@@ -173,32 +177,7 @@ export const deletePost = async (req, res) => {
   res.status(200).json({ message: "Post deleted successfully" });
 };
 
-// export const featurePost = async (req, res) => {
-//   const clerkUserId = req.auth().userId;
-//   const postId = req.body.postId;
 
-//   if (!clerkUserId) {
-//     return res.status(401).json({ message: "Unauthenticated" });
-//   }
-
-// const role = req.auth.sessionsClaims?.metadata?.role || "user";
-
-//   if (role !== "admin") {
-//     return res.status(403).json({ message: "Only admins can feature posts" });
-//   }
-
-//   const post = await Posts.findById(postId);
-
-//   if (!post) {
-//     return res.status(404).json({ message: "Post not found" });
-//   }
-//   const isFeatured = post.isFeatured;
-
-//   const updatedPost = await Posts.findByIdAndUpdate(
-//     isFeatured:
-// };
-
-// ✅ Feature Post (admin only) — FIXED: removed the accidental delete-on-non-admin block
 
 export const featurePost = async (req, res) => {
   const clerkUserId = req.auth().userId;

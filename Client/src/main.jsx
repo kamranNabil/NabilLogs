@@ -11,8 +11,8 @@ import Register from "./routes/Register.jsx";
 import SinglePost from "./routes/SinglePost.jsx";
 import Write from "./routes/Write.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; 
-import {ToastContainer} from 'react-toastify';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient();
@@ -40,12 +40,12 @@ const router = createBrowserRouter([
         element: <Postlist />,
       },
       {
-        path: "/register",
-        element: <Register />,
-      },
-      {
         path: "/singlepost/:slug",
         element: <SinglePost />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
       {
         path: "/write",
@@ -60,7 +60,7 @@ createRoot(document.getElementById("root")).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-        <ToastContainer position="bottom-right"/>
+        <ToastContainer position="bottom-right" />
       </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>
