@@ -1,6 +1,6 @@
 import { IKImage } from "imagekitio-react";
 
-const Image = ({ src, className, w, h, alt, loading = "lazy", fetchPriority }) => {
+const Image = ({ src, className, w, h, alt, loading = "lazy", fetchpriority }) => {
   if (!src) return null;
 
   const endpoint = import.meta.env.VITE_IK_URL_ENDPOINT;
@@ -19,7 +19,7 @@ const Image = ({ src, className, w, h, alt, loading = "lazy", fetchPriority }) =
         width={w}
         height={h}
         loading={loading}
-        fetchpriority={fetchPriority}
+        fetchpriority={fetchpriority}
       />
     );
   }
@@ -33,7 +33,7 @@ const Image = ({ src, className, w, h, alt, loading = "lazy", fetchPriority }) =
       width={w}
       height={h}
       loading={loading}
-      fetchpriority={fetchPriority}
+      fetchpriority={fetchpriority}
     />
   );
 };
