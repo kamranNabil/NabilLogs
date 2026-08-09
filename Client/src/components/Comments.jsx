@@ -1,7 +1,7 @@
 import Comm from "./Comm";
 import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth, useUser, SignInButton } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
 
 
@@ -77,21 +77,36 @@ const Comments = ({ postId }) => {
 
     return (
         <div id="comments" className="flex flex-col gap-8 lg:w-3/5 mb-12">
-            <h1 className="text-xl text-gray-500 underline">Comments</h1>
-            <form onSubmit={handleSubmit} className="flex items-center justify-between gap-8 w-full">
-                <textarea
-                    id="comment-textarea"
-                    name="desc"
-                    placeholder="Write a comment...."
-                    className="flex-1 p-1 mb-8 border border-gray-300 rounded-xl"
-                />
-                <button
-                    type="submit"
-                    className="bg-blue-800 px-4 py-3 text-white font-medium rounded-xl mb-8"
-                >
-                    Post
-                </button>
-            </form>
+            <h2 className="text-xl text-gray-500 underline">Comments</h2>
+
+            {user ? (
+                <form onSubmit={handleSubmit} className="flex items-center justify-between gap-8 w-full">
+                    <label htmlFor="comment-textarea" className="sr-only">
+                        Write a comment
+                    </label>
+                    <textarea
+                        id="comment-textarea"
+                        name="desc"
+                        placeholder="Write a comment...."
+                        className="flex-1 p-1 mb-8 border border-gray-300 rounded-xl"
+                    />
+                    <button
+                        type="submit"
+                        className="bg-blue-800 px-4 py-3 text-white font-medium rounded-xl mb-8"
+                    >
+                        Post
+                    </button>
+                </form>
+            ) : (
+                <div className="flex items-center justify-between gap-4 p-4 mb-8 bg-gray-50 border border-gray-200 rounded-xl">
+                    <span className="text-gray-600 text-sm">Log in to leave a comment.</span>
+                    <SignInButton mode="modal">
+                        <button className="bg-blue-800 px-4 py-2 text-white text-sm font-medium rounded-xl whitespace-nowrap">
+                            Log In
+                        </button>
+                    </SignInButton>
+                </div>
+            )}
 
             {mutation.isPending && (
                 <Comm
@@ -104,6 +119,7 @@ const Comments = ({ postId }) => {
                         },
                     }}
                     postId={postId}
+                    isAdmin={isAdmin}
                 />
             )}
 

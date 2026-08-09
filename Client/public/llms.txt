@@ -7,3 +7,8 @@
 - [Web Design](https://nabillogs.vercel.app/posts?cat=webD): Responsive Tailwind CSS and frontend patterns.
 - [App Development](https://nabillogs.vercel.app/posts?cat=appd): React and state management guides.
 - [SEO](https://nabillogs.vercel.app/posts?cat=seo): Full-stack JavaScript SEO best practices.
+- [Marketing](https://nabillogs.vercel.app/posts?cat=marketing): Content strategy and audience growth notes.
+
+## Site
+- [Home](https://nabillogs.vercel.app/): Latest posts, featured articles, and category browsing.
+- [All Posts](https://nabillogs.vercel.app/posts): Full archive of published articles.

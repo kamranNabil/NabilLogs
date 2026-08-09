@@ -1,4 +1,4 @@
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth, useUser, SignInButton } from "@clerk/clerk-react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -48,7 +48,19 @@ const Write = () => {
     }
 
     if (isLoaded && !isSignedIn) {
-        return <div>You are not signed in!</div>;
+        return (
+            <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
+                <h1 className="text-2xl font-semibold text-gray-700">Log in to write a post</h1>
+                <p className="text-gray-500 max-w-md">
+                    You want yourself to be heard— Create an account to get started.
+                </p>
+                <SignInButton mode="modal">
+                    <button className="bg-blue-800 px-6 py-3 text-white font-medium rounded-xl">
+                        Log In
+                    </button>
+                </SignInButton>
+            </div>
+        );
     }
 
     const handlesubmit = (e) => {
