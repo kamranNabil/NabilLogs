@@ -2,25 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NabilLogs | Code & Concepts</title>
     <meta name="description" content="NabilLogs — practical, no-fluff writing on web design, app development, databases, SEO, and marketing." />
     <link rel="canonical" href="https://nabillogs.vercel.app/" />
 
-    <!-- Open Graph / social sharing previews -->
+    <!-- Resource Preconnects to Improve Initial Load Latency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
+
+    <!-- Open Graph / Social Sharing Previews -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="NabilLogs | Code & Concepts" />
     <meta property="og:description" content="Practical, no-fluff writing on web design, app development, databases, SEO, and marketing." />
     <meta property="og:url" content="https://nabillogs.vercel.app/" />
     <meta property="og:image" content="https://nabillogs.vercel.app/og-image.png" />
 
-    <!-- Twitter card -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="NabilLogs | Code & Concepts" />
     <meta name="twitter:description" content="Practical, no-fluff writing on web design, app development, databases, SEO, and marketing." />
     <meta name="twitter:image" content="https://nabillogs.vercel.app/og-image.png" />
 
+    <!-- Google Fonts with display=swap to prevent Layout Shift -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"

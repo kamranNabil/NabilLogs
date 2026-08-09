@@ -1,43 +1,39 @@
 import { IKImage } from "imagekitio-react";
 
-const Image = ({ src, className, w, h, alt }) => {
-  console.log("ImageKit URL:", import.meta.env.VITE_IK_URL_ENDPOINT);
-  console.log("Image path:", src);
+const Image = ({ src, className, w, h, alt, loading = "lazy", fetchPriority }) => {
+  if (!src) return null;
 
-  // Check if src is a full URL or just a path
-  const isFullUrl = src && (src.startsWith("http://") || src.startsWith("https://"));
+  const endpoint = import.meta.env.VITE_IK_URL_ENDPOINT;
 
-  if (isFullUrl) {
-    // If it's a full URL, use it directly as src
+  if (src.includes("ik.imagekit.io")) {
+    const transformationStr = `tr=w-${w || 400},h-${h || 250},fo-auto,q-80`;
+    const optimizedSrc = src.includes("?") 
+      ? `${src}&${transformationStr}` 
+      : `${src}?${transformationStr}`;
+
     return (
       <img
-        src={src}
+        src={optimizedSrc}
         className={className}
-        alt={alt}
+        alt={alt || "Blog image"}
         width={w}
         height={h}
-        loading="lazy"
+        loading={loading}
+        fetchpriority={fetchPriority}
       />
     );
   }
 
-  // Otherwise use IKImage for paths
+  // Fallback img
   return (
-    <IKImage
-      urlEndpoint={import.meta.env.VITE_IK_URL_ENDPOINT}
-      path={src}
+    <img
+      src={src}
       className={className}
-      loading="lazy"
-      lqip={{ active: true, quality: 20 }}
-      alt={alt}
+      alt={alt || "Blog image"}
       width={w}
       height={h}
-      transformation={[
-        {
-          width: w,
-          height: h,
-        }
-      ]}
+      loading={loading}
+      fetchpriority={fetchPriority}
     />
   );
 };

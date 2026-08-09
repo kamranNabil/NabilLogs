@@ -6,8 +6,8 @@ const getExcerpt = (html, maxLength = 300) => {
   if (!html) return "";
 
   const plainText = html
-    .replace(/<[^>]*>/g, " ")  
-    .replace(/\s+/g, " ")       
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 
   if (plainText.length <= maxLength) return plainText;
@@ -22,29 +22,32 @@ const PostListItem = ({ post }) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 mb-8">
-      {/* Image */}
+      {/* Cover Image */}
       <div className="md:w-1/3">
         <Image
           src={post.img || placeholderImage}
           alt={`Cover image for ${post.title}`}
-          className="rounded-2xl object-cover w-full"
-          w="400"
-          h="230"
+          className="rounded-2xl object-cover w-full h-48 md:h-full"
+          w="320"
+          h="240"
         />
       </div>
 
-      {/* Details */}
-      <div className="flex flex-col gap-4 md:w-2/3 mb-4 ">
-        <Link to={`/singlepost/${post.slug}`} className="text-xl font-semibold">
+      {/* Details & Excerpt */}
+      <div className="flex flex-col gap-4 md:w-2/3 mb-4">
+        <Link 
+          to={`/singlepost/${post.slug}`} 
+          className="text-xl font-semibold hover:text-blue-800 transition-colors"
+        >
           {post.title}
         </Link>
-        <div className="flex items-center gap-2 text-gray-400 text-sm">
+        <div className="flex items-center gap-2 text-gray-600 text-sm">
           <span>Written by</span>
-          <Link className="text-blue-800" to={`/posts?author=${post.user.username}`}>
-            {post.user.username}
+          <Link className="text-blue-800 font-medium" to={`/posts?author=${post.user?.username}`}>
+            {post.user?.username || "Admin"}
           </Link>
           <span>on</span>
-          <Link className="text-blue-800" to={`/posts?cat=${post.category}`}>
+          <Link className="text-blue-800 font-medium" to={`/posts?cat=${post.category}`}>
             {post.category}
           </Link>
           <span>{format(post.createdAt)}</span>
@@ -54,10 +57,10 @@ const PostListItem = ({ post }) => {
         </p>
         <Link
           to={`/singlepost/${post.slug}`}
-          className="underline text-blue-800 text-sm"
-          aria-label={`Read more about ${post.title}`}
+          className="underline text-blue-800 text-sm font-medium hover:text-blue-600 transition-colors w-fit"
+          aria-label={`Read full article: ${post.title}`}
         >
-          Read More
+          Read article
         </Link>
       </div>
     </div>

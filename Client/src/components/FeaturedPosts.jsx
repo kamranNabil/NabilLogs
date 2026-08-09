@@ -15,23 +15,43 @@ const FeaturedPosts = () => {
     queryFn: fetchPost,
   });
 
-  if (isLoading) return "Loading...";
-  if (error) return "An error has occurred: " + error.message;
+  if (isLoading) {
+    return (
+      <div className="mt-8 flex flex-col gap-4 animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-48 mb-2"></div>
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="w-full lg:w-1/2 flex flex-col gap-4">
+            <div className="rounded-3xl bg-gray-200 w-full h-80"></div>
+            <div className="h-5 bg-gray-200 rounded w-1/3"></div>
+            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+          </div>
+          <div className="w-full lg:w-1/2 flex flex-col gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex flex-col sm:flex-row lg:h-1/3 justify-between gap-4">
+                <div className="w-full sm:w-1/3 aspect-video bg-gray-200 rounded-3xl"></div>
+                <div className="w-2/3 flex flex-col gap-2">
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-full"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) return <div className="text-red-500 py-4">An error has occurred: {error.message}</div>;
 
   const posts = data?.posts;
-  if (!posts || posts.length === 0) {
-    return null;
-  }
+  if (!posts || posts.length === 0) return null;
 
   return (
     <div className="mt-8 flex flex-col gap-4">
-      {/* 1. Heading is now at the top above the flex container */}
       <h2 className="text-2xl font-bold text-gray-800">Featured Posts</h2>
 
-      {/* 2. Flex layout for the posts grid */}
       <div className="flex flex-col lg:flex-row gap-8">
-        
-        {/* First Post */}
+        {/* Main Featured Post */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
           {posts[0].img && (
             <Image
@@ -39,6 +59,9 @@ const FeaturedPosts = () => {
               alt={`Cover image for ${posts[0].title}`}
               className="rounded-3xl object-cover w-full h-80"
               w="895"
+              h="320"
+              loading="eager"
+              fetchpriority="high"
             />
           )}
           <div className="flex items-center gap-4">
@@ -46,111 +69,51 @@ const FeaturedPosts = () => {
             <Link to={`/posts?cat=${posts[0].category}`} className="text-blue-800 lg:text-lg">
               {posts[0].category}
             </Link>
-            <span className="text-gray-500">{format(posts[0].createdAt)}</span>
+            <span className="text-gray-600">{format(posts[0].createdAt)}</span>
           </div>
 
           <Link
             to={`/singlepost/${posts[0].slug}`}
-            className="text-xl lg:text-3xl font-semibold lg:font-bold"
+            className="text-xl lg:text-3xl font-semibold lg:font-bold hover:text-blue-800 transition-colors"
+            aria-label={`Read featured article: ${posts[0].title}`}
           >
             {posts[0].title}
           </Link>
         </div>
 
-        {/* Others */}
+        {/* Secondary Featured Posts List */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
-          {/* Second */}
-          {posts[1] && (
-            <div className="flex flex-col sm:flex-row lg:h-1/3 justify-between gap-4">
-              {posts[1].img && (
+          {posts.slice(1, 4).map((post, index) => (
+            <div key={post._id || index} className="flex flex-col sm:flex-row lg:h-1/3 justify-between gap-4">
+              {post.img && (
                 <div className="w-full sm:w-1/3 aspect-video">
                   <Image
-                    src={posts[1].img}
-                    alt={`Cover image for ${posts[1].title}`}
-                    className="rounded-3xl object-center w-full h-full"
-                    w="298"
+                    src={post.img}
+                    alt={`Cover image for ${post.title}`}
+                    className="rounded-3xl object-cover w-full h-full"
+                    w="320"
+                    h="240"
                   />
                 </div>
               )}
               <div className="w-2/3">
                 <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
-                  <span className="font-semibold">02.</span>
-                  <Link to={`/posts?cat=${posts[1].category}`} className="text-blue-800">
-                    {posts[1].category}
+                  <span className="font-semibold">0{index + 2}.</span>
+                  <Link to={`/posts?cat=${post.category}`} className="text-blue-800">
+                    {post.category}
                   </Link>
-                  <span className="text-gray-500 text-sm">{format(posts[1].createdAt)}</span>
+                  <span className="text-gray-600 text-sm">{format(post.createdAt)}</span>
                 </div>
                 <Link
-                  to={`/singlepost/${posts[1].slug}`}
-                  className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium"
+                  to={`/singlepost/${post.slug}`}
+                  className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium hover:text-blue-800 transition-colors"
+                  aria-label={`Read article: ${post.title}`}
                 >
-                  {posts[1].title}
+                  {post.title}
                 </Link>
               </div>
             </div>
-          )}
-
-          {/* Third */}
-          {posts[2] && (
-            <div className="flex flex-col sm:flex-row lg:h-1/3 justify-between gap-4">
-              {posts[2].img && (
-                <div className="w-full sm:w-1/3 aspect-video">
-                  <Image
-                    src={posts[2].img}
-                    alt={`Cover image for ${posts[2].title}`}
-                    className="rounded-3xl object-center w-full h-full"
-                    w="298"
-                  />
-                </div>
-              )}
-              <div className="w-2/3">
-                <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
-                  <span className="font-semibold">03.</span>
-                  <Link to={`/posts?cat=${posts[2].category}`} className="text-blue-800">
-                    {posts[2].category}
-                  </Link>
-                  <span className="text-gray-500 text-sm">{format(posts[2].createdAt)}</span>
-                </div>
-                <Link
-                  to={`/singlepost/${posts[2].slug}`}
-                  className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium"
-                >
-                  {posts[2].title}
-                </Link>
-              </div>
-            </div>
-          )}
-
-          {/* Fourth */}
-          {posts[3] && (
-            <div className="flex flex-col sm:flex-row lg:h-1/3 justify-between gap-4">
-              {posts[3].img && (
-                <div className="w-full sm:w-1/3 aspect-video">
-                  <Image
-                    src={posts[3].img}
-                    alt={`Cover image for ${posts[3].title}`}
-                    className="rounded-3xl object-center w-full h-full"
-                    w="298"
-                  />
-                </div>
-              )}
-              <div className="w-2/3">
-                <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
-                  <span className="font-semibold">04.</span>
-                  <Link to={`/posts?cat=${posts[3].category}`} className="text-blue-800">
-                    {posts[3].category}
-                  </Link>
-                  <span className="text-gray-500 text-sm">{format(posts[3].createdAt)}</span>
-                </div>
-                <Link
-                  to={`/singlepost/${posts[3].slug}`}
-                  className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium"
-                >
-                  {posts[3].title}
-                </Link>
-              </div>
-            </div>
-          )}
+          ))}
         </div>
       </div>
     </div>

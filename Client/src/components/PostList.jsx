@@ -57,7 +57,7 @@ const PostList = () => {
       dataLength={allposts.length}
       next={fetchNextPage}
       hasMore={!!hasNextPage}
-      loader={<h4>Loading more posts...</h4>}
+      loader={<p className="text-center text-gray-600 my-4 font-medium">Loading more posts...</p>}
       // endMessage={<p><b>All posts loaded!</b></p>}
     >
       {allposts.length > 0 ? (

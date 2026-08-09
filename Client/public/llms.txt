@@ -1,0 +1,9 @@
+# NabilLogs - Tech & Software Engineering Blog
+
+> Full-stack software development articles, database optimization notes, and MERN stack insights.
+
+## Core Topics
+- [Databases](https://nabillogs.vercel.app/posts?cat=db): MongoDB query optimization and indexing strategies.
+- [Web Design](https://nabillogs.vercel.app/posts?cat=webD): Responsive Tailwind CSS and frontend patterns.
+- [App Development](https://nabillogs.vercel.app/posts?cat=appd): React and state management guides.
+- [SEO](https://nabillogs.vercel.app/posts?cat=seo): Full-stack JavaScript SEO best practices.
