@@ -26,7 +26,7 @@ const FeaturedPosts = () => {
   return (
     <div className="mt-8 flex flex-col gap-4">
       {/* 1. Heading is now at the top above the flex container */}
-      <h1 className="text-2xl font-bold text-gray-800">Featured Posts</h1>
+      <h2 className="text-2xl font-bold text-gray-800">Featured Posts</h2>
 
       {/* 2. Flex layout for the posts grid */}
       <div className="flex flex-col lg:flex-row gap-8">
@@ -42,7 +42,7 @@ const FeaturedPosts = () => {
             />
           )}
           <div className="flex items-center gap-4">
-            <h1 className="font-semibold lg:text-lg">01.</h1>
+            <span className="font-semibold lg:text-lg">01.</span>
             <Link to={`/posts?cat=${posts[0].category}`} className="text-blue-800 lg:text-lg">
               {posts[0].category}
             </Link>
@@ -74,7 +74,7 @@ const FeaturedPosts = () => {
               )}
               <div className="w-2/3">
                 <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
-                  <h1 className="font-semibold">02.</h1>
+                  <span className="font-semibold">02.</span>
                   <Link to={`/posts?cat=${posts[1].category}`} className="text-blue-800">
                     {posts[1].category}
                   </Link>
@@ -105,7 +105,7 @@ const FeaturedPosts = () => {
               )}
               <div className="w-2/3">
                 <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
-                  <h1 className="font-semibold">03.</h1>
+                  <span className="font-semibold">03.</span>
                   <Link to={`/posts?cat=${posts[2].category}`} className="text-blue-800">
                     {posts[2].category}
                   </Link>
@@ -136,7 +136,7 @@ const FeaturedPosts = () => {
               )}
               <div className="w-2/3">
                 <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
-                  <h1 className="font-semibold">04.</h1>
+                  <span className="font-semibold">04.</span>
                   <Link to={`/posts?cat=${posts[3].category}`} className="text-blue-800">
                     {posts[3].category}
                   </Link>
