@@ -27,7 +27,7 @@ const Navbar = () => {
     <div className="w-full h-16 md:h-20 flex items-center justify-between">
       {/* Logo */}
       <Link to="/" className="flex items-center gap-4 text-2xl font-bold">
-        <Image src="https://ik.imagekit.io/xljac05tb/public/logo.png" alt="NabilLogs" w={160} h={50} className="h-10 w-auto object-contain mix-blend-multiply" />
+        <Image src="https://ik.imagekit.io/xljac05tb/public/logo.png" alt="NabilLogs Logo" w={220} h={60} className="h-12 w-auto object-contain" />
       </Link>
 
       {/* Mobile Menu */}
