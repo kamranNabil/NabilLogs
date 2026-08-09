@@ -154,10 +154,14 @@ const PostMenuActions = ({ post }) => {
 
   return (
     <div className="">
-      <h1 className="mt-8 mb-4 text-sm font-medium">Actions</h1>
+      <h2 className="mt-8 mb-4 text-sm font-medium">Actions</h2>
 
       {/* ✅ NEW: Add a Comment action */}
-      <div onClick={handleAddComment} className="flex items-center gap-2 py-2 text-sm cursor-pointer">
+      <button
+        type="button"
+        onClick={handleAddComment}
+        className="flex items-center gap-2 py-2 text-sm cursor-pointer bg-transparent border-none p-0 w-full text-left"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -168,23 +172,29 @@ const PostMenuActions = ({ post }) => {
           strokeLinejoin="round"
           width="20px"
           height="20px"
+          aria-hidden="true"
         >
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
         <span>Add a Comment</span>
-      </div>
+      </button>
 
       {isPending ? (
         "Loading..."
       ) : error ? (
         "Saved posts fetching failed!"
       ) : (
-        <div className="flex items-center gap-2 py-2 text-sm cursor-pointer" onClick={handleSave}>
+        <button
+          type="button"
+          onClick={handleSave}
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer bg-transparent border-none p-0 w-full text-left"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 48 48"
             width="20px "
             height="20px"
+            aria-hidden="true"
           >
             <path
               d="M12 4C10.3 4 9 5.3 9 7v34l15-9 15 9V7c0-1.7-1.3-3-3-3H12z"
@@ -194,11 +204,15 @@ const PostMenuActions = ({ post }) => {
             />
           </svg>
           <span>{saveMutation.isPending ? "Saving..." : isSaved ? "Unsave this Post" : "Save this Post"}</span>
-        </div>
+        </button>
       )}
 
       {isAdmin && (
-        <div onClick={handleFeature} className="flex items-center gap-2 py-2 text-sm cursor-pointer">
+        <button
+          type="button"
+          onClick={handleFeature}
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer bg-transparent border-none p-0 w-full text-left"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -207,15 +221,20 @@ const PostMenuActions = ({ post }) => {
             strokeWidth="2"
             width="20px"
             height="20px"
+            aria-hidden="true"
           >
             <polygon points="12 2 15.09 10.26 23.83 10.36 17.77 16.01 19.85 24.07 12 18.77 4.15 24.07 6.23 16.01 0.17 10.36 8.91 10.26 12 2" />
           </svg>
           <span>{isFeatured ? "Unfeature this Post" : "Feature this Post"}</span>
-        </div>
+        </button>
       )}
 
       {user && (isPostOwner || isAdmin) && (
-        <div onClick={handleDelete} className="flex items-center gap-2 py-2 text-sm cursor-pointer text-red-600 hover:text-red-800">
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer text-red-600 hover:text-red-800 bg-transparent border-none p-0 w-full text-left"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -226,6 +245,7 @@ const PostMenuActions = ({ post }) => {
             strokeLinejoin="round"
             width="20px"
             height="20px"
+            aria-hidden="true"
           >
             <polyline points="3 6 5 6 21 6" />
             <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
@@ -233,7 +253,7 @@ const PostMenuActions = ({ post }) => {
             <line x1="14" y1="11" x2="14" y2="17" />
           </svg>
           <span>{deleteMutation.isPending ? "Deleting..." : "Delete this Post"}</span>
-        </div>
+        </button>
       )}
     </div>
   );

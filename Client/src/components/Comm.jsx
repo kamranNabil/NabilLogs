@@ -44,6 +44,7 @@ const Comm = ({ comment, postId }) => {
         {comment?.user?.img && (
           <Image
             src={comment.user.img}
+            alt={`${comment.user.username || "User"}'s avatar`}
             className="w-10 h-10 rounded-full object-cover"
             w="40"
             h="40"
@@ -51,13 +52,16 @@ const Comm = ({ comment, postId }) => {
         )}
         <span className="font-medium">{comment?.user?.username || "Unknown"}</span>
         <span className="text-sm text-gray-500">{format(comment?.createdAt)}</span>
-        {user && (comment?.user?.username === user?.username || role === "admin") && (
-          <span
-            className="text-sm text-red-300 hover:text-red-500 cursor-pointer"
+        {/* {user && (comment?.user?.username === user?.username || role === "admin") && ( */}
+        {user && (isCommentAuthor || isAdmin) && (
+          <button
+            type="button"
+            className="text-sm text-red-300 hover:text-red-500 cursor-pointer bg-transparent border-none p-0"
             onClick={handleDelete}
+            aria-label={`Delete comment by ${comment?.user?.username || "Unknown"}`}
           >
             {mutation.isPending ? "Deleting..." : "Delete"}
-          </span>
+          </button>
         )}
       </div>
       <div className="mt-4">

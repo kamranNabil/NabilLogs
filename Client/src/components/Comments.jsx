@@ -20,6 +20,22 @@ const Comments = ({ postId }) => {
         queryFn: () => fetchComments(postId),
     });
 
+    // publicMetadata (which is never actually populated in this app).
+    const { data: currentDbUser } = useQuery({
+        queryKey: ["currentUser", user?.id],
+        queryFn: async () => {
+            const token = await getToken();
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/me`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            return response.data;
+        },
+        enabled: !!user,
+        staleTime: 5 * 60 * 1000,
+    });
+ 
+    const isAdmin = currentDbUser?.role === "admin" || false;
+
     const mutation = useMutation({
         mutationFn: async (newComment) => {
             const token = await getToken();
@@ -96,6 +112,7 @@ const Comments = ({ postId }) => {
                     key={comment._id}
                     comment={comment}
                     postId={postId}
+                    isAdmin={isAdmin}
                 />
             ))}
         </div>

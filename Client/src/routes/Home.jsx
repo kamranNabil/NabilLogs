@@ -13,7 +13,7 @@ const Home = () => {
         <span>.</span> */}
         <span className="text-blue-800">Blogs and Articles</span>
       </div>
-      <div className="flex items-center jsutify-between">
+      <div className="flex items-center justify-between">
         <div className="">
           <h1 className="text-gray-700 text-xl md:text-3xl lg:text-5xl font-bold">
             Welcome to NabilLogs
@@ -68,7 +68,7 @@ const Home = () => {
       <FeaturedPosts />
       {/* PostList */}
       <div className="">
-        <h1 className="my-8 text-2xl">Recent Posts</h1>
+        <h2 className="my-8 text-2xl">Recent Posts</h2>
         <PostList />
       </div>
     </div>

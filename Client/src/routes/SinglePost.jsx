@@ -60,7 +60,7 @@ const SinglePost = () => {
           </h1>
           <div className="flex items-center gap-2 text-gray-400 text-sm">
             <span>written by</span>
-            <Link className="text-blue-800 font-medium">{data.user?.username || "Admin"}</Link>
+            <Link to={`/posts?author=${data.user?.username}`} className="text-blue-800 font-medium">{data.user?.username || "Admin"}</Link>
             <span>on</span>
             <Link to={`/posts?cat=${data.category}`} className="text-blue-800 font-medium">{data.category}</Link>
             <span>{format(data.createdAt)}</span>
@@ -75,6 +75,7 @@ const SinglePost = () => {
           <div className="hidden lg:block w-2/5">
             <Image
               src={data.img}
+              alt={`Cover image for ${data.title}`}
               w="600"
               h="300"
               className="rounded-2xl object-cover w-full h-64"
@@ -92,12 +93,13 @@ const SinglePost = () => {
 
         {/* Sidebar Menu */}
         <div className="px-4 h-max sticky top-8 lg:w-1/4">
-          <h1 className="mt-2 mb-4 text-sm font-medium">Author</h1>
+          <h2 className="mt-2 mb-4 text-sm font-medium">Author</h2>
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               {data.user?.img && (
                 <Image
                   src={data.user.img}
+                  alt={`${data.user.username || "Author"}'s avatar`}
                   className="w-12 h-12 rounded-full object-cover"
                   w="48"
                   h="48"
@@ -111,18 +113,18 @@ const SinglePost = () => {
               {data.user?.bio || "Software engineer sharing backend architecture and tech insights."}
             </p>
             <div className="flex gap-2">
-              <Link to="/">
-                <Image src="https://ik.imagekit.io/xljac05tb/public/facebook.svg?updatedAt=1762241100863" w={20} h={20} />
+              <Link to="/" aria-label="Facebook (link not yet configured)">
+                <Image src="https://ik.imagekit.io/xljac05tb/public/facebook.svg?updatedAt=1762241100863" alt="Facebook" w={20} h={20} />
               </Link>
-              <Link to="/">
-                <Image src="https://ik.imagekit.io/xljac05tb/public/instagram.svg?updatedAt=1762241100976" w={20} h={20} />
+              <Link to="/" aria-label="Instagram (link not yet configured)">
+                <Image src="https://ik.imagekit.io/xljac05tb/public/instagram.svg?updatedAt=1762241100976" alt="Instagram" w={20} h={20} />
               </Link>
             </div>
           </div>
 
           <PostMenuActions post={data}/>
 
-          <h1 className="mt-8 mb-4 text-sm font-medium">Categories</h1>
+          <h2 className="mt-8 mb-4 text-sm font-medium">Categories</h2>
           <div className="flex flex-col gap-2 text-sm">
             <Link className="underline" to="/posts">All</Link>
             <Link className="underline" to="/posts?cat=webD">Web Design</Link>
@@ -132,7 +134,7 @@ const SinglePost = () => {
             <Link className="underline" to="/posts?cat=marketing">Marketing</Link>
           </div>
 
-          <h1 className="mt-5 mb-2 text-sm font-medium">Search</h1>
+          <h2 className="mt-5 mb-2 text-sm font-medium">Search</h2>
           <Search />
         </div>
       </div>

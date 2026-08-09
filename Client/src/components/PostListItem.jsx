@@ -2,19 +2,16 @@ import { Link } from "react-router-dom";
 import Image from "./image";
 import { format } from "timeago.js";
 
-// Strips HTML tags from the rich-text content and trims to a set length,
-// so the list view shows a readable 4-5 line preview instead of raw HTML.
 const getExcerpt = (html, maxLength = 300) => {
   if (!html) return "";
 
   const plainText = html
-    .replace(/<[^>]*>/g, " ")   // strip HTML tags
-    .replace(/\s+/g, " ")       // collapse extra whitespace/newlines
+    .replace(/<[^>]*>/g, " ")  
+    .replace(/\s+/g, " ")       
     .trim();
 
   if (plainText.length <= maxLength) return plainText;
 
-  // cut at the last full word before maxLength, then add ellipsis
   const trimmed = plainText.slice(0, maxLength);
   const lastSpace = trimmed.lastIndexOf(" ");
   return trimmed.slice(0, lastSpace > 0 ? lastSpace : maxLength) + "...";
@@ -29,6 +26,7 @@ const PostListItem = ({ post }) => {
       <div className="md:w-1/3">
         <Image
           src={post.img || placeholderImage}
+          alt={`Cover image for ${post.title}`}
           className="rounded-2xl object-cover w-full"
           w="400"
           h="230"
@@ -46,7 +44,7 @@ const PostListItem = ({ post }) => {
             {post.user.username}
           </Link>
           <span>on</span>
-          <Link className="text-blue-800" to={`/posts?category=${post.category}`}>
+          <Link className="text-blue-800" to={`/posts?cat=${post.category}`}>
             {post.category}
           </Link>
           <span>{format(post.createdAt)}</span>
@@ -54,7 +52,11 @@ const PostListItem = ({ post }) => {
         <p className="text-gray-700 leading-relaxed">
           {getExcerpt(post.content)}
         </p>
-        <Link to={`/singlepost/${post.slug}`} className="underline text-blue-800 text-sm">
+        <Link
+          to={`/singlepost/${post.slug}`}
+          className="underline text-blue-800 text-sm"
+          aria-label={`Read more about ${post.title}`}
+        >
           Read More
         </Link>
       </div>
