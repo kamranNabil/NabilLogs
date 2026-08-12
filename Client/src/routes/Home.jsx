@@ -22,6 +22,13 @@ const Home = () => {
             Document your journey in software engineering, backend architecture,
             and full-stack development. Explore articles, insights, and lessons learned.
           </p>
+          {/* Mobile-only CTA */}
+          <Link
+            to="write"
+            className="md:hidden mt-6 block w-full bg-blue-800 text-white text-center font-semibold py-3 rounded-full"
+          >
+            Write a Post
+          </Link>
         </div>
         {/* Animated buttons */}
         <Link to="write" className="hidden md:block relative" aria-label="write a new post">
