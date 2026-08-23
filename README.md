@@ -1,9 +1,11 @@
 # NabilLogs — Full-Stack Blog Publishing Platform
 
-[![Live App](https://img.shields.io/badge/Live_Demo-nabillogs.vercel.app-2563EB?style=for-the-badge&logo=vercel&logoColor=white)](https://nabillogs.vercel.app/)
-[![Client Stack](https://img.shields.io/badge/Frontend-React_18_+_Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![Server Stack](https://img.shields.io/badge/Backend-Node.js_+_Express_5-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![Database](https://img.shields.io/badge/Database-MongoDB_Mongoose-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+<p align="left">
+  <a href="https://nabillogs.vercel.app/"><img src="https://img.shields.io/badge/Live_Demo-nabillogs.vercel.app-2563EB?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" /></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/Frontend-React_18_+_Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="Frontend" /></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Backend-Node.js_+_Express_5-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Backend" /></a>
+  <a href="https://www.mongodb.com/"><img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="Database" /></a>
+</p>
 
 A full-stack content publishing platform engineered for developers, backend architects, and software engineers to share technical articles, architectural insights, and tutorials. Built with a responsive mobile-first UI, secure authentication, automated webhook sync, rich-text sanitization, and cloud-optimized media delivery.
 
