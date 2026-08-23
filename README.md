@@ -42,108 +42,118 @@ A full-stack content publishing platform engineered for developers, backend arch
 
 ## 📂 Project Structure
 
+```text
 FullStackBlog/
 ├── Client/
-│ ├── public/
-│ ├── src/
-│ │ ├── components/
-│ │ │ ├── Comm.jsx # Comment card display
-│ │ │ ├── Comments.jsx # Comment list & post comment form
-│ │ │ ├── FeaturedPosts.jsx # Hero section featured post carousel/grid
-│ │ │ ├── image.jsx # ImageKit optimized image wrapper
-│ │ │ ├── MainCategories.jsx # Category pill navigation bar
-│ │ │ ├── Navbar.jsx # Responsive navigation with mobile menu drawer
-│ │ │ ├── PostList.jsx # Infinite scrolling post feed
-│ │ │ ├── PostListItem.jsx # Individual post preview card
-│ │ │ ├── PostMenuActions.jsx # Save/Bookmark & Author delete controls
-│ │ │ ├── Search.jsx # Search bar filter
-│ │ │ ├── SideMenu.jsx # Category list & filtering sidebar
-│ │ │ └── Uploads.jsx # ImageKit file upload handler
-│ │ ├── layouts/
-│ │ │ └── MainLayout.jsx # App shell & common container
-│ │ ├── routes/
-│ │ │ ├── Home.jsx # Landing page view
-│ │ │ ├── Login.jsx # Clerk Sign-In screen
-│ │ │ ├── PostList.jsx # Filtered posts archive page
-│ │ │ ├── Register.jsx # Clerk Sign-Up screen
-│ │ │ ├── SinglePost.jsx # Full article reader view
-│ │ │ └── Write.jsx # Article creation & rich-text editor
-│ │ ├── App.jsx
-│ │ ├── index.css # Tailwind styles & scrollbar overrides
-│ │ └── main.jsx # QueryClient & Clerk Provider setup
-│ ├── index.html
-│ ├── package.json
-│ ├── tailwind.config.js
-│ └── vite.config.js
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Comm.jsx               # Comment card display
+│   │   │   ├── Comments.jsx           # Comment list & post comment form
+│   │   │   ├── FeaturedPosts.jsx      # Hero section featured post carousel/grid
+│   │   │   ├── image.jsx              # ImageKit optimized image wrapper
+│   │   │   ├── MainCategories.jsx     # Category pill navigation bar
+│   │   │   ├── Navbar.jsx             # Responsive navigation with mobile menu drawer
+│   │   │   ├── PostList.jsx           # Infinite scrolling post feed
+│   │   │   ├── PostListItem.jsx       # Individual post preview card
+│   │   │   ├── PostMenuActions.jsx    # Save/Bookmark & Author delete controls
+│   │   │   ├── Search.jsx             # Search bar filter
+│   │   │   ├── SideMenu.jsx           # Category list & filtering sidebar
+│   │   │   └── Uploads.jsx            # ImageKit file upload handler
+│   │   ├── layouts/
+│   │   │   └── MainLayout.jsx         # App shell & common container
+│   │   ├── routes/
+│   │   │   ├── Home.jsx               # Landing page view
+│   │   │   ├── Login.jsx              # Clerk Sign-In screen
+│   │   │   ├── PostList.jsx           # Filtered posts archive page
+│   │   │   ├── Register.jsx           # Clerk Sign-Up screen
+│   │   │   ├── SinglePost.jsx         # Full article reader view
+│   │   │   └── Write.jsx              # Article creation & rich-text editor
+│   │   ├── App.jsx
+│   │   ├── index.css                  # Tailwind styles & scrollbar overrides
+│   │   └── main.jsx                   # QueryClient & Clerk Provider setup
+│   ├── index.html
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js
 │
 └── Server/
-├── controllers/
-│ ├── Commentscontrollers.js # Comments CRUD operations
-│ ├── Postscontrollers.js # Post filtering, slug lookup, and creation
-│ ├── Usercontrollers.js # Saved posts and user-specific actions
-│ └── Webhookcontrollers.js # Svix Clerk user synchronization
-├── lib/
-│ └── ConnectDB.js # MongoDB connection handler
-├── Middleware/
-│ └── IncreasedVisit.js # View count tracking middleware
-├── models/
-│ ├── Commentsmodels.js # Comment Mongoose schema
-│ ├── Postsmodels.js # Post schema (title, slug, desc, content, img)
-│ ├── Usermodels.js # User schema & saved post references
-│ └── Webhookmodels.js # Webhook event payload schema
-├── routes/
-│ ├── Commentsroutes.js
-│ ├── Postsroutes.js
-│ ├── Userroutes.js
-│ └── Webhookroutes.js
-├── index.js # Express application entry point
-└── package.json
+    ├── controllers/
+    │   ├── Commentscontrollers.js     # Comments CRUD operations
+    │   ├── Postscontrollers.js        # Post filtering, slug lookup, and creation
+    │   ├── Usercontrollers.js         # Saved posts and user-specific actions
+    │   └── Webhookcontrollers.js      # Svix Clerk user synchronization
+    ├── lib/
+    │   └── ConnectDB.js               # MongoDB connection handler
+    ├── Middleware/
+    │   └── IncreasedVisit.js          # View count tracking middleware
+    ├── models/
+    │   ├── Commentsmodels.js          # Comment Mongoose schema
+    │   ├── Postsmodels.js             # Post schema (title, slug, desc, content, img)
+    │   ├── Usermodels.js              # User schema & saved post references
+    │   └── Webhookmodels.js           # Webhook event payload schema
+    ├── routes/
+    │   ├── Commentsroutes.js
+    │   ├── Postsroutes.js
+    │   ├── Userroutes.js
+    │   └── Webhookroutes.js
+    ├── index.js                       # Express application entry point
+    └── package.json
+```
 
-⚙️ Local Development Setup
+---
 
-1. Clone the Repository
-   Bash
-   git clone [https://github.com/kamranNabil/NabilLogs.git]
-   cd NabilLogs
+## ⚙️ Local Development Setup
 
-2. Backend Configuration (/Server)
-   Bash
-   cd Server
-   npm install
-   Create a .env file in the /Server folder:
+### 1. Clone the Repository
+```bash
+git clone https://github.com/kamranNabil/NabilLogs.git
+cd NabilLogs
+```
 
-Code snippet
+### 2. Backend Configuration (`/Server`)
+```bash
+cd Server
+npm install
+```
 
+Create a `.env` file in the `/Server` folder:
+```env
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
 CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
 CLERK_WEBHOOK_SECRET=your_svix_webhook_secret
-IMAGEKIT_URL_ENDPOINT=[https://ik.imagekit.io/your_endpoint]
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_endpoint
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
 CLIENT_URL=http://localhost:5173
+```
 
-Start the backend server
-Bash
+Start the backend server:
+```bash
 npm run dev
+```
 
-3. Frontend Configuration (/Client)
-   Open a new terminal tab and navigate to /Client:
-   Bash
-   cd Client
-   npm install
+### 3. Frontend Configuration (`/Client`)
+Open a new terminal tab and navigate to `/Client`:
+```bash
+cd Client
+npm install
+```
 
-Create a .env file in the /Client folder:
-Code snippet
+Create a `.env` file in the `/Client` folder:
+```env
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-VITE_IMAGEKIT_URL_ENDPOINT=[https://ik.imagekit.io/your_endpoint]
+VITE_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_endpoint
 VITE_IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 VITE_API_URL=http://localhost:3000
+```
 
 Start the Vite development server:
-Bash
+```bash
 npm run dev
+```
 
 The application will run locally at http://localhost:5173.
 
