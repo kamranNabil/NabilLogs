@@ -172,8 +172,15 @@ The application will run locally at http://localhost:5173.
 | 9  | GET    | /users/saved                         | Fetch list of posts bookmarked/saved by the current user                       | Authenticated                      |
 | 10 | PATCH  | /users/save                          | Add or remove a post ID from user's saved posts list                           | Authenticated                      |
 | 11 | GET    | /posts/upload-auth (or /upload/auth) | Generate ImageKit client-side security authentication signature                | Authenticated                      |
-| 12 | POST   | /webhooks                            | Handle Svix-verified Clerk user sync events (user.created, user.deleted, etc.) | Clerk Webhook                      |
+| 12 | POST   | /webhooks                            | Handle Svix-verified Clerk user sync events (user.created, user. deleted, etc.) | Clerk Webhook                      |
 
 ## 📄 License
-Distributed under the [ISC License](LICENSE).
+MIT License
 
+Copyright (c) 2026 Md. Nabil Kamran
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
