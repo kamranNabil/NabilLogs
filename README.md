@@ -174,5 +174,5 @@ The application will run locally at http://localhost:5173.
 | 11 | GET    | /posts/upload-auth (or /upload/auth) | Generate ImageKit client-side security authentication signature                | Authenticated                      |
 | 12 | POST   | /webhooks                            | Handle Svix-verified Clerk user sync events (user.created, user.deleted, etc.) | Clerk Webhook                      |
 
-📄 License
+## 📄 License
 Distributed under the ISC License.
