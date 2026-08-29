@@ -175,4 +175,5 @@ The application will run locally at http://localhost:5173.
 | 12 | POST   | /webhooks                            | Handle Svix-verified Clerk user sync events (user.created, user.deleted, etc.) | Clerk Webhook                      |
 
 ## 📄 License
-Distributed under the ISC License.
+Distributed under the [ISC License](LICENSE).
+
