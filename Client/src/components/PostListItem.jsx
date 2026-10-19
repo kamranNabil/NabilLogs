@@ -26,7 +26,7 @@ const PostListItem = ({ post }) => {
       <div className="md:w-1/3">
         <Image
           src={post.img || placeholderImage}
-          alt={`Cover image for ${post.title}`}
+          // alt={`Cover image for ${post.title}`}
           className="rounded-2xl object-cover w-full h-48 md:h-full"
           w="320"
           h="240"
