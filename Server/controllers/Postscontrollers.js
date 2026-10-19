@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import { clerkClient } from "@clerk/express";
 import ImageKit from "imagekit";
 import Posts from "../models/Postsmodels.js";
 import Users from "../models/Usermodels.js";
@@ -14,7 +15,7 @@ export const getAllPosts = async (req, res) => {
 
     const query = {};
 
-    console.log("🔍 Query parameters:", req.query);
+    // console.log("🔍 Query parameters:", req.query);
 
     const cat = req.query.cat;
     const author = req.query.author;
@@ -110,11 +111,36 @@ export const createPost = async (req, res) => {
       return res.status(401).json({ message: "Not Authenticated" });
     }
 
-    const user = await Users.findOne({ clerkId: clerkUserId });
+    // 1. Check if user already exists in Mongo
+    let user = await Users.findOne({ clerkId: clerkUserId });
+
+    // 2. If not found, fetch details dynamically from Clerk
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      const clerkUser = await clerkClient.users.getUser(clerkUserId);
+
+      const primaryEmail =
+        clerkUser.emailAddresses?.find(
+          (e) => e.id === clerkUser.primaryEmailAddressId
+        )?.emailAddress || clerkUser.emailAddresses[0]?.emailAddress;
+
+      const dynamicUsername =
+        clerkUser.username ||
+        (clerkUser.firstName
+          ? `${clerkUser.firstName}${clerkUser.lastName ? `_${clerkUser.lastName}` : ""}`
+          : primaryEmail?.split("@")[0]);
+
+      user = await Users.create({
+        clerkId: clerkUserId,
+        username: dynamicUsername.toLowerCase().replace(/\s+/g, ""),
+        email: primaryEmail,
+        img: clerkUser.imageUrl || "",
+        savedPosts: [],
+        role: "user",
+      });
+      console.log(`✅ Auto-synced user from Clerk: ${user.username}`);
     }
 
+    // 3. Create post with user._id
     let slug = slugify(req.body.title, { lower: true });
     let existingPost = await Posts.findOne({ slug });
     let counter = 2;
