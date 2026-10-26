@@ -1,25 +1,24 @@
 import { format } from "timeago.js";
 import Image from "./image";
-import { useAuth, useUser } from "@clerk/clerk-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const Comm = ({ comment, postId }) => {
-  const { user } = useUser();
-  const { getToken } = useAuth();
-  const role = user?.publicMetadata?.role;
+  const { currentUser: user, token } = useAuth();
   const queryClient = useQueryClient();
-  
-  const isCommentAuthor = comment?.user?.username === user?.username;
-  const isAdmin = role === "admin";
+
+  const isCommentAuthor =
+    user && (comment?.user?._id === user?._id || comment?.user?.username === user?.username);
+  const isAdmin = user?.role === "admin";
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const token = await getToken();
+      const activeToken = token || localStorage.getItem("token");
       return axios.delete(`${import.meta.env.VITE_API_URL}/comments/${comment._id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${activeToken}`,
         },
       });
     },
@@ -52,11 +51,11 @@ const Comm = ({ comment, postId }) => {
         )}
         <span className="font-medium">{comment?.user?.username || "Unknown"}</span>
         <span className="text-sm text-gray-500">{format(comment?.createdAt)}</span>
-        {/* {user && (comment?.user?.username === user?.username || role === "admin") && ( */}
+
         {user && (isCommentAuthor || isAdmin) && (
           <button
             type="button"
-            className="text-sm text-red-300 hover:text-red-500 cursor-pointer bg-transparent border-none p-0"
+            className="text-sm text-red-500 hover:text-red-700 cursor-pointer bg-transparent border-none p-0 ml-auto transition"
             onClick={handleDelete}
             aria-label={`Delete comment by ${comment?.user?.username || "Unknown"}`}
           >
@@ -65,7 +64,7 @@ const Comm = ({ comment, postId }) => {
         )}
       </div>
       <div className="mt-4">
-        <p>{comment?.desc}</p>
+        <p className="text-slate-700 leading-relaxed">{comment?.desc}</p>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ const SinglePost = () => {
 
   if (isPending) {
     return (
-      <div className="flex flex-col gap-8 animate-pulse py-8">
+      <div className="flex flex-col gap-8 animate-pulse py-4">
         <div className="h-12 bg-gray-200 rounded-lg w-3/4"></div>
         <div className="h-6 bg-gray-200 rounded w-1/3"></div>
         <div className="h-64 bg-gray-200 rounded-2xl w-full"></div>
@@ -43,24 +43,27 @@ const SinglePost = () => {
   if (!data) return <div className="py-12 text-center text-lg">Post not found!</div>;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col mt-14">
       <Helmet>
         <title>{`${data.title} | NabilLogs`}</title>
         <meta name="description" content={data.desc || "Read this article on NabilLogs."} />
         <meta property="og:title" content={data.title} />
         <meta property="og:description" content={data.desc} />
-        {data.img && <meta property="og:image" content={data.img} />}
       </Helmet>
+      {data.img && <meta property="og:image" content={data.img} />}
 
       {/* Post Header / Meta */}
-      <div className="flex gap-8">
-        <div className="lg:w-3/5 flex flex-col gap-8">
-          <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold">
+      <div className="flex gap-8 mt-10">
+        <div className="lg:w-3/5 flex flex-col gap-3">
+          <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold py-2">
             {data.title}
           </h1>
           <div className="flex items-center gap-2 text-gray-400 text-sm">
             <span>written by</span>
-            <Link to={`/posts?author=${data.user?.username}`} className="text-blue-800 font-medium">{data.user?.username || "Admin"}</Link>
+            {/* Header Byline */}
+            <Link to={`/posts?author=${data.user?.username}`} className="text-blue-800 font-medium">
+              {data.user?.username || "Guest Writer"}
+            </Link>
             <span>on</span>
             <Link to={`/posts?cat=${data.category}`} className="text-blue-800 font-medium">{data.category}</Link>
             <span>{format(data.createdAt)}</span>
@@ -72,13 +75,13 @@ const SinglePost = () => {
           </p>
         </div>
         {data.img && (
-          <div className="hidden lg:block w-2/5">
+          <div className="hidden lg:block w-2/5 px-6 mb-4">
             <Image
               src={data.img}
               alt={`Cover image for ${data.title}`}
               w="600"
               h="300"
-              className="rounded-2xl object-cover w-full h-64"
+              className="rounded-2xl object-cover w-80 h-64"
             />
           </div>
         )}
@@ -86,15 +89,15 @@ const SinglePost = () => {
 
       {/* Main Content Body */}
       <div className="flex flex-col md:flex-row gap-12">
-        <div 
-          className="lg:w-3/4 lg:text-lg flex flex-col gap-6 text-justify prose max-w-none text-gray-800"
+        <div
+          className="lg:w-3/4 lg:text-lg flex flex-col text-justify prose max-w-none text-gray-800"
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.content) }}
         />
 
         {/* Sidebar Menu */}
-        <div className="px-4 h-max sticky top-8 lg:w-1/4">
-          <h2 className="mt-2 mb-4 text-sm font-medium">Author</h2>
-          <div className="flex flex-col gap-4">
+        <div className="px-4 h-max sticky top-4 lg:w-1/4">
+          <h2 className="mb-1 text-sm font-medium">Author</h2>
+          <div className="flex flex-col gap-2">
             <div className="flex items-center gap-4">
               {data.user?.img && (
                 <Image
@@ -105,8 +108,9 @@ const SinglePost = () => {
                   h="48"
                 />
               )}
-              <Link className="text-blue-800 font-semibold">
-                {data.user?.username || "Admin"}
+              {/* Sidebar Author Box */}
+              <Link to={`/posts?author=${data.user?.username}`} className="text-blue-800 font-semibold">
+                {data.user?.username || "Guest Writer"}
               </Link>
             </div>
             <p className="text-sm text-gray-500">
@@ -122,14 +126,14 @@ const SinglePost = () => {
             </div>
           </div>
 
-          <PostMenuActions post={data}/>
+          <PostMenuActions post={data} />
 
-          <h2 className="mt-8 mb-4 text-sm font-medium">Categories</h2>
+          <h2 className="mt-2 mb-1 text-sm font-medium">Categories</h2>
           <div className="flex flex-col gap-2 text-sm">
             <Link className="underline" to="/posts">All</Link>
-            <Link className="underline" to="/posts?cat=webD">Web Design</Link>
-            <Link className="underline" to="/posts?cat=appd">App Development</Link>
-            <Link className="underline" to="/posts?cat=db">Databases</Link>
+            <Link className="underline" to="/posts?cat=web-design">Web Design</Link>
+            <Link className="underline" to="/posts?cat=app-development">App Development</Link>
+            <Link className="underline" to="/posts?cat=database">Database</Link>
             <Link className="underline" to="/posts?cat=seo">SEO</Link>
             <Link className="underline" to="/posts?cat=marketing">Marketing</Link>
           </div>
@@ -140,7 +144,7 @@ const SinglePost = () => {
       </div>
 
       {/* Comments Section */}
-      <Comments postId={data._id}/>
+      <Comments postId={data._id} />
     </div>
   );
 };

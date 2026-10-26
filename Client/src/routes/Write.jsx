@@ -1,152 +1,120 @@
-import { useAuth, useUser, SignInButton } from "@clerk/clerk-react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
-import { toast } from "react-toastify";
-import Uploads from "../components/Uploads.jsx";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const Write = () => {
-    const { isLoaded, isSignedIn } = useUser();
-    const [value, setValue] = useState("");
-    const [cover, setCover] = useState(null);
-    const [image, setImage] = useState(null);
-    const [video, setVideo] = useState(null);
-    const [progress, setProgress] = useState(0);
+  const { currentUser, token } = useAuth();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        image && setValue((prev) => prev + `<p><image src="${image.url}"/></p>`)
-    }, [image]);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("general");
+  const [desc, setDesc] = useState("");
+  const [content, setContent] = useState("");
+  const [guestAuthor, setGuestAuthor] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        video && setValue((prev) => prev + `<p><iframe class="ql-video" src="${video.url}"/></p>`)
-    }, [video]);
+  // Inside handleSubmit in Write.jsx:
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-    const navigate = useNavigate();
+    try {
+      const activeToken = token || localStorage.getItem("token");
 
-    const { getToken } = useAuth();
+      const payload = {
+        title,
+        category,
+        desc,
+        content,
+      };
 
-    const mutation = useMutation({
-        mutationFn: async (newPost) => {
-            const token = await getToken();
-            return axios.post(`${import.meta.env.VITE_API_URL}/posts`, newPost, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-        },
-        onSuccess: (res) => {
-            toast.success("Post created successfully");
-            navigate(`/singlepost/${res.data.post.slug}`);
-        },
-    });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/posts`,
+        payload,
+        {
+          headers: activeToken ? { Authorization: `Bearer ${activeToken}` } : {},
+        }
+      );
 
-    if (!isLoaded) {
-        return <div>Loading...</div>;
+      navigate(`/singlepost/${res.data.post.slug}`);
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Failed to publish post");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (isLoaded && !isSignedIn) {
-        return (
-            <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
-                <h1 className="text-2xl font-semibold text-gray-700">Log in to write a post</h1>
-                <p className="text-gray-500 max-w-md">
-                    You want yourself to be heard— Create an account to get started.
-                </p>
-                <SignInButton mode="modal">
-                    <button className="bg-blue-800 px-6 py-3 text-white font-medium rounded-xl">
-                        Log In
-                    </button>
-                </SignInButton>
-            </div>
-        );
-    }
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6 p-4 max-w-4xl mx-auto">
+      <h1 className="text-xl font-light">Create a post</h1>
 
-    const handlesubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
+      {!currentUser && (
+        <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl mt-8 flex items-center justify-between">
+          <p className="text-xs text-blue-700">
+            Wanna publish as guest. Enter your name or post anonymously.
+          </p>
+          <input
+            type="text"
+            placeholder="Author name (Optional)"
+            value={guestAuthor}
+            onChange={(e) => setGuestAuthor(e.target.value)}
+            className="p-1.5 text-xs bg-white border rounded-lg outline-none"
+          />
+        </div>
+      )}
 
-        const data = {
-            title: formData.get("title"),
-            desc: formData.get("desc"),
-            category: formData.get("category"),
-            content: value,
-            img: cover?.url,
-        };
-        console.log("Submitting data:", data);
-        mutation.mutate(data);
-    };
+      <input
+        type="text"
+        placeholder="My Story"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="text-4xl mt-4 font-semibold outline-none bg-transparent"
+        required
+      />
 
-    return (
-        <div className="md:h-[calc(100vh-80px)] h-[calc(100vh-80px)] flex flex-col gap-6">
-            <h1 className="text-cl font-light">Create a post</h1>
-            <form onSubmit={handlesubmit} className="flex flex-col gap-6 flex-1 mb-6">
-                <Uploads type="image" setProgress={setProgress} setData={setCover}>
-                    <button
-                        type="button"
-                        className="w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white"
-                    >
-                        Add a cover photo
-                    </button>
-                </Uploads>
-                <input
-                    className="text-4xl font-semibold bg-transparent outline-none"
-                    type="text"
-                    placeholder="My Story"
-                    name="title"
-                />
-                <div className="flex items-center gap-4">
-                    <label htmlFor="" className="text-lg">
-                        Choose a category
-                    </label>
-                    <select
-                        name="category"
-                        id=""
-                        className="p-2 rounded-xl bg-white shadow-md"
-                    >
-                        <option value="general">General</option>
-                        <option value="webD">Web Design</option>
-                        <option value="appd">App Development</option>
-                        <option value="db">Databases</option>
-                        <option value="seo">SEO</option>
-                        <option value="marketing">Marketing</option>
-                    </select>
-                </div>
-                <textarea
-                    className="p-4 rounded-xl bg-white shadow-md"
-                    name="desc"
-                    placeholder="A short desc"
-                />
-                <div className="flex flex-1">
-                    <div className="flex flex-col mr-4 gap-2">
-                        <Uploads type="image" setProgress={setProgress} setData={setImage}>
-                            ;)
-                        </Uploads>
-                        <Uploads type="video" setProgress={setProgress} setData={setVideo}>
-                            ):
-                        </Uploads>
-                    </div>
-                    <ReactQuill
-                        theme="snow"
-                        className="flex-1 rounded-xl bg-white shadow-md"
-                        value={value}
-                        onChange={setValue}
-                        readOnly={0 < progress && progress < 100}
-                    />
-                </div >
-                <button
-                    disabled={mutation.isPending || (0 < progress && progress < 100)}
-                    type="submit"
-                    className="bg-blue-800 text-white font-medium rounded-xl p-2 mt-4 w-40 disabled:bg-blue-400 disabled:cursor-not-allowed"
-                >
-                    {mutation.isPending ? "Loading..." : "Send"}
-                </button>
-                <div>Progress: {progress}%</div>
-                {mutation.isError && <span>{mutation.error.message}</span>}
-            </form >
-        </div >
-    );
+      <div className="flex items-center gap-4">
+        <label className="text-sm font-medium">Choose a category</label>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="p-2 border rounded-xl outline-none"
+        >
+          <option value="general">General</option>
+          <option value="web-design">Web Design</option>
+          <option value="app-development">App Development</option>
+          <option value="database">Database</option>
+          <option value="seo">SEO</option>
+          <option value="marketing">SEO</option>
+        </select>
+      </div>
+
+      <textarea
+        placeholder="A short desc"
+        value={desc}
+        onChange={(e) => setDesc(e.target.value)}
+        className="p-4 rounded-xl bg-white shadow-sm border outline-none"
+        rows={3}
+        required
+      />
+
+      <textarea
+        placeholder="Write your story..."
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        className="p-4 rounded-xl bg-white shadow-sm border outline-none min-h-[300px]"
+        required
+      />
+
+      <button
+        disabled={loading}
+        className="w-36 py-3 bg-blue-800 text-white rounded-xl font-medium hover:bg-blue-900 transition disabled:opacity-50"
+      >
+        {loading ? "Publishing..." : "Send"}
+      </button>
+    </form>
+  );
 };
 
 export default Write;

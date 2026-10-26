@@ -1,11 +1,11 @@
 import express from "express";
-import { requireAuth } from "@clerk/express";
+import { verifyAuth } from "../middleware/authMiddleware.js";
 import { getUserSavedPosts, savePost, getCurrentUser } from "../controllers/Usercontrollers.js";
 
 const router = express.Router();
 
-router.get("/me", requireAuth(), getCurrentUser);
-router.get("/saved", requireAuth(), getUserSavedPosts);
-router.patch("/save", requireAuth(), savePost);
+router.get("/me", verifyAuth, getCurrentUser);
+router.get("/saved", verifyAuth, getUserSavedPosts);
+router.patch("/save", verifyAuth, savePost);
 
 export default router;

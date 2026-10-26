@@ -4,32 +4,28 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import ImageKit from "imagekit";
+import cookieParser from "cookie-parser";
 import connectDB from "./lib/ConnectDB.js";
 import Users from "./routes/Userroutes.js";
 import Posts from "./routes/Postsroutes.js";
 import Comments from "./routes/Commentsroutes.js";
-import Webhookroutes from "./routes/Webhookroutes.js";
-import { clerkMiddleware } from "@clerk/express";
+import authRoutes from "./routes/Authroutes.js";
 
 dotenv.config();
 
 const app = express();
 
 // ✅ CORS setup
+app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
-
-// ✅ Clerk middleware first (for auth context)
-app.use(clerkMiddleware());
-
-// ✅ Webhook routes before express.json (raw body needed)
-app.use("/webhook", Webhookroutes);
 
 // ✅ JSON parser after webhook routes
 app.use(express.json());
@@ -68,7 +64,7 @@ ${allUrls
     <loc>${url.loc}</loc>
     ${url.lastmod ? `<lastmod>${url.lastmod}</lastmod>` : ""}
     <priority>${url.priority}</priority>
-  </url>`
+  </url>`,
   )
   .join("\n")}
 </urlset>`;
@@ -82,6 +78,7 @@ ${allUrls
 });
 
 // ✅ API routes
+app.use("/auth", authRoutes);
 app.use("/users", Users);
 app.use("/posts", Posts);
 app.use("/comments", Comments);
@@ -94,11 +91,19 @@ app.use((err, req, res, next) => {
 
 // ✅ Start server after DB connection
 const start = async () => {
-  await connectDB();
-  const port = process.env.PORT || 4000;
-  app.listen(port, () => {
-    console.log(`🚀 Server running on port ${port}...`);
-  });
+  try {
+    await connectDB();
+    const port = process.env.PORT || 4000;
+    app.listen(port, () => {
+      console.log(`🚀 Server running on port ${port}...`);
+    });
+  } catch (error) {
+    console.error(
+      "❌ Failed to start server due to DB connection error:",
+      error.message,
+    );
+    process.exit(1);
+  }
 };
 
 start();

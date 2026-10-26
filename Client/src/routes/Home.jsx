@@ -6,12 +6,12 @@ import PostList from "../components/PostList";
 
 const Home = () => {
   return (
-    <div className="mt-4 flex flex-col gap-4">
+    <div className="mt-7 flex flex-col gap-4">
       {/* Breadcrumb*/}
       <div className="flex gap-4">
         {/* <Link to="/">Home</Link>
         <span>.</span> */}
-        <span className="text-blue-800">Blogs and Articles</span>
+        <span className="text-blue-500 font-semibold text-lg md:text-2xl lg:text-xl w-full mt-16">Blogs and Articles</span>
       </div>
       <div className="flex items-center justify-between">
         <div className="">
@@ -54,7 +54,7 @@ const Home = () => {
               </textPath>
             </text>
           </svg>
-          <span aria-hidden="true" className="absolute top-0 left-0 right-0 bottom-0 m-auto w-20 h-20 bg-blue-800 rounded-full flex items-center justify-center">
+          <span aria-hidden="true" className="absolute top-0 left-0 right-0 bottom-0 m-auto w-20 h-20 bg-[#099DFF] rounded-full flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

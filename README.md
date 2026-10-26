@@ -123,9 +123,9 @@ Create a `.env` file in the `/Server` folder:
 ```env
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
-CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+<!-- CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
-CLERK_WEBHOOK_SECRET=your_svix_webhook_secret
+CLERK_WEBHOOK_SECRET=your_svix_webhook_secret -->
 IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_endpoint
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key

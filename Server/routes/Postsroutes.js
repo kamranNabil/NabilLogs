@@ -1,4 +1,5 @@
 import express from "express";
+import { optionalAuth, verifyAuth } from "../middleware/authMiddleware.js";
 import { 
   getAllPosts, 
   getPost, 
@@ -7,7 +8,6 @@ import {
   uploadAuth, 
   featurePost 
 } from "../controllers/Postscontrollers.js";
-import { requireAuth } from "@clerk/express";
 import increasedVisit from "../Middleware/IncreasedVisit.js";
 
 const router = express.Router();
@@ -15,8 +15,8 @@ const router = express.Router();
 router.get("/upload-auth", uploadAuth);
 router.get("/", getAllPosts);
 router.get("/:slug", increasedVisit, getPost);
-router.post("/", requireAuth(), createPost);
-router.delete("/:id", requireAuth(), deletePost);
-router.patch("/:id/feature", requireAuth(), featurePost); // ✅ protect this route
+router.post("/", optionalAuth, createPost);
+router.delete("/:id", verifyAuth, deletePost);
+router.patch("/:id/feature", verifyAuth, featurePost); // ✅ protect this route
 
 export default router;

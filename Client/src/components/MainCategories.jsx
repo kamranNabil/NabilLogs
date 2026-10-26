@@ -15,27 +15,27 @@ const MainCategories = () => {
         <div className="flex-1 flex items-center justify-between gap-4">
           <Link
             to="/posts"
-            className="bg-blue-800 text-white rounded-full px-4 py-2 whitespace-nowrap"
+            className="bg-blue-500 text-white rounded-full px-4 py-2 whitespace-nowrap"
           >
             All Posts
           </Link>
           <Link
-            to="/posts?cat=webD"
+            to="/posts?cat=web-design"
             className="hover:bg-blue-50 rounded-full px-4 py-2 whitespace-nowrap"
           >
             Web Design
           </Link>
           <Link
-            to="/posts?cat=appd"
+            to="/posts?cat=app-development"
             className="hover:bg-blue-50 rounded-full px-4 py-2 whitespace-nowrap"
           >
             App Development
           </Link>
           <Link
-            to="/posts?cat=db"
+            to="/posts?cat=database"
             className="hover:bg-blue-50 rounded-full px-4 py-2 whitespace-nowrap"
           >
-            Databases
+            Database
           </Link>
           <Link
             to="/posts?cat=seo"
@@ -61,9 +61,9 @@ const MainCategories = () => {
             className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-blue-300 focus:outline-none"
           >
             <option value="">All Posts</option>
-            <option value="webD">Web Design</option>
-            <option value="appd">App Development</option>
-            <option value="db">Databases</option>
+            <option value="web-design">Web Design</option>
+            <option value="app-development">App Development</option>
+            <option value="database">Database</option>
             <option value="seo">SEO</option>
             <option value="marketing">Marketing</option>
           </select>
