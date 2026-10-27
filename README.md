@@ -105,6 +105,7 @@ NabilLogs/
     └── package.json
 ```
 
+
 ```
 ⚙️ Local Development Setup
 1. Clone the Repository
@@ -119,6 +120,7 @@ cd Server
 npm install
 Create a .env file in the /Server folder:
 
+
 Code snippet
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
@@ -127,8 +129,9 @@ IMAGEKIT_URL_ENDPOINT=[https://ik.imagekit.io/your_endpoint](https://ik.imagekit
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
 CLIENT_URL=http://localhost:5173
-Start the backend server:
 
+
+Start the backend server:
 Bash
 npm run dev
 
