@@ -1,17 +1,19 @@
 import { Link } from "react-router-dom";
 import Image from "./image";
 import { format } from "timeago.js";
+import ImageWithSkeleton from "./ImageWithSkeleton";
 
 const PostListItem = ({ post }) => {
   return (
-    <article className="flex flex-col xl:flex-row gap-6 mb-10 pb-8 border-b border-slate-200/60 last:border-none">
+    <article className="flex flex-col xl:flex-row gap-6 mb-10 pb-8 border-b border-slate-200/80 last:border-none">
       {/* 1. Thumbnail: fixed 16:9 aspect ratio prevents squashing */}
       {post.img ? (
-        <div className="w-full xl:w-2/5 aspect-[16/9] rounded-2xl overflow-hidden shadow-sm bg-slate-100 shrink-0">
-          <Image
-            src={post.img}
+        <div className="w-full xl:w-2/5 shrink-0">
+          <ImageWithSkeleton
+            src={post.img || "https://placehold.co/600x400?text=Blog+Post"}
             alt={post.title}
-            className="w-full h-full object-cover"
+            aspectRatio="aspect-[16/9]"
+            className="rounded-2xl shadow-sm"
             w="735"
             h="414"
           />

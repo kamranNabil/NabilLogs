@@ -8,6 +8,7 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import { format } from "timeago.js";
 import { Helmet } from "react-helmet-async";
+import ImageWithSkeleton from "../components/ImageWithSkeleton.jsx";
 
 const fetchPost = async (slug) => {
   const response = await axios.get(`${import.meta.env.VITE_API_URL}/posts/${slug}`);
@@ -104,15 +105,14 @@ const SinglePost = () => {
         {/* Hero image — shown on all viewports */}
         {data.img && (
           <div className="w-full lg:w-2/5 shrink-0">
-            <div className="w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-slate-100">
-              <Image
-                src={data.img}
-                alt={`Cover image for ${data.title}`}
-                w="700"
-                h="450"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <ImageWithSkeleton
+              src={data.img}
+              alt={data.title}
+              aspectRatio="aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3]"
+              className="rounded-2xl shadow-sm"
+              w="700"
+              h="450"
+            />
           </div>
         )}
       </div>
@@ -139,7 +139,7 @@ const SinglePost = () => {
 
         {/* Sidebar Menu */}
         <aside className="w-full lg:w-1/4 flex flex-col gap-6 sticky top-24 self-start">
-          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/60 shadow-sm backdrop-blur-md">
+          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
             <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
               Author
             </h2>
@@ -196,7 +196,7 @@ const SinglePost = () => {
           </div>
 
           {/* Categories card */}
-          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/60 shadow-sm backdrop-blur-md">
+          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
             <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
               Categories
             </h2>
@@ -223,7 +223,7 @@ const SinglePost = () => {
           </div>
 
           {/* Search Card */}
-          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/60 shadow-sm backdrop-blur-md">
+          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
             <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
               Search
             </h2>
