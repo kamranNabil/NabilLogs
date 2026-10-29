@@ -25,127 +25,218 @@ const SinglePost = () => {
   const { slug } = useParams();
 
   const { isPending, error, data } = useQuery({
-    queryKey: ['post', slug],
+    queryKey: ["post", slug],
     queryFn: () => fetchPost(slug),
   });
 
   if (isPending) {
     return (
-      <div className="flex flex-col gap-8 animate-pulse py-4">
-        <div className="h-12 bg-gray-200 rounded-lg w-3/4"></div>
-        <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-        <div className="h-64 bg-gray-200 rounded-2xl w-full"></div>
+      <div className="flex flex-col gap-6 animate-pulse py-10 max-w-7xl mx-auto px-4">
+        <div className="h-10 bg-slate-200 rounded-xl w-3/4"></div>
+        <div className="h-5 bg-slate-200 rounded-lg w-1/2"></div>
+        <div className="h-64 sm:h-96 bg-slate-200 rounded-3xl w-full mt-4"></div>
       </div>
     );
   }
 
-  if (error) return <div className="py-12 text-center text-red-500">Error loading post: {error.message}</div>;
-  if (!data) return <div className="py-12 text-center text-lg">Post not found!</div>;
+  if (error) {
+    return (
+      <div className="py-20 text-center text-red-600 font-medium">
+        Error loading post: {error.message}
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="py-20 text-center text-slate-500 font-medium">
+        Post not found!
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col mt-14">
+    <article className="flex flex-col max-w-7xl mx-auto px-3 sm:px-6 pt-20 md:pt-24 pb-16">
       <Helmet>
         <title>{`${data.title} | NabilLogs`}</title>
         <meta name="description" content={data.desc || "Read this article on NabilLogs."} />
         <meta property="og:title" content={data.title} />
         <meta property="og:description" content={data.desc} />
+        {data.img && <meta property="og:image" content={data.img} />}
       </Helmet>
-      {data.img && <meta property="og:image" content={data.img} />}
 
       {/* Post Header / Meta */}
-      <div className="flex gap-8 mt-10">
-        <div className="lg:w-3/5 flex flex-col gap-3">
-          <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold py-2">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start justify-between">
+        <div className="w-full lg:w-3/5 flex flex-col gap-3">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight text-slate-900 leading-snug">
             {data.title}
           </h1>
-          <div className="flex items-center gap-2 text-gray-400 text-sm">
-            <span>written by</span>
-            {/* Header Byline */}
-            <Link to={`/posts?author=${data.user?.username}`} className="text-blue-800 font-medium">
+
+          {/* Clean, wrapped metadata row */}
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-slate-500 font-medium pt-1">
+            <span>Written by</span>
+            <Link
+              to={`/posts?author=${data.user?.username}`}
+              className="text-blue-500 hover:underline font-semibold"
+            >
               {data.user?.username || "Guest Writer"}
             </Link>
             <span>on</span>
-            <Link to={`/posts?cat=${data.category}`} className="text-blue-800 font-medium">{data.category}</Link>
+            <Link
+              to={`/posts?cat=${data.category}`}
+              className="text-blue-500 hover:underline capitalize font-semibold"
+            >
+              {data.category}
+            </Link>
+            <span>•</span>
             <span>{format(data.createdAt)}</span>
             <span>•</span>
-            <span>{getReadTime(data.content)}</span>
+            <span className="text-slate-400">{getReadTime(data.content)}</span>
           </div>
-          <p className="text-gray-500 font-medium">
-            {data.desc}
-          </p>
+
+          {data.desc && (
+            <p className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed mt-1">
+              {data.desc}
+            </p>
+          )}
         </div>
+
+        {/* Hero image — shown on all viewports */}
         {data.img && (
-          <div className="hidden lg:block w-2/5 px-6 mb-4">
-            <Image
-              src={data.img}
-              alt={`Cover image for ${data.title}`}
-              w="600"
-              h="300"
-              className="rounded-2xl object-cover w-80 h-64"
-            />
+          <div className="w-full lg:w-2/5 shrink-0">
+            <div className="w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-slate-100">
+              <Image
+                src={data.img}
+                alt={`Cover image for ${data.title}`}
+                w="700"
+                h="450"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         )}
       </div>
 
-      {/* Main Content Body */}
-      <div className="flex flex-col md:flex-row gap-12">
+      {/* Main Content Body & Sidebar */}
+      <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 mt-10">
+        {/* Article text: removed text-justify to fix awkward word gaps */}
         <div
-          className="lg:w-3/4 lg:text-lg flex flex-col text-justify prose max-w-none text-gray-800"
+          className="
+            w-full lg:w-3/4
+            text-slate-700 text-base sm:text-lg leading-relaxed
+            space-y-4 break-words text-left
+            prose prose-slate max-w-none
+            [&_p]:mb-4 [&_p]:leading-relaxed
+            [&_h2]:text-xl sm:[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_h2]:mt-8 [&_h2]:mb-3
+            [&_h3]:text-lg sm:[&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-slate-900 [&_h3]:mt-6 [&_h3]:mb-2
+            [&_pre]:bg-slate-900 [&_pre]:text-slate-100 [&_pre]:p-4 [&_pre]:rounded-2xl [&_pre]:overflow-x-auto
+            [&_code]:text-sm [&_code]:font-mono
+            [&_a]:text-[#099DFF] [&_a]:underline
+            [&_img]:rounded-2xl [&_img]:shadow-sm
+          "
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.content) }}
         />
 
         {/* Sidebar Menu */}
-        <div className="px-4 h-max sticky top-4 lg:w-1/4">
-          <h2 className="mb-1 text-sm font-medium">Author</h2>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-4">
-              {data.user?.img && (
-                <Image
-                  src={data.user.img}
-                  alt={`${data.user.username || "Author"}'s avatar`}
-                  className="w-12 h-12 rounded-full object-cover"
-                  w="48"
-                  h="48"
-                />
-              )}
-              {/* Sidebar Author Box */}
-              <Link to={`/posts?author=${data.user?.username}`} className="text-blue-800 font-semibold">
-                {data.user?.username || "Guest Writer"}
-              </Link>
+        <aside className="w-full lg:w-1/4 flex flex-col gap-6 sticky top-24 self-start">
+          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/60 shadow-sm backdrop-blur-md">
+            <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
+              Author
+            </h2>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                {data.user?.img ? (
+                  <Image
+                    src={data.user.img}
+                    alt={`${data.user.username || "Author"}'s avatar`}
+                    className="w-10 h-10 rounded-full object-cover shadow-sm"
+                    w="40"
+                    h="40"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-[#099DFF] text-white flex items-center justify-center text-sm font-bold uppercase shadow-sm">
+                    {data.user?.username?.[0] || "A"}
+                  </div>
+                )}
+                <div>
+                  <Link
+                    to={`/posts?author=${data.user?.username}`}
+                    className="text-slate-900 hover:text-[#099DFF] font-semibold text-sm transition"
+                  >
+                    {data.user?.username || "Guest Writer"}
+                  </Link>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                {data.user?.bio || "Software engineer sharing backend architecture and tech insights."}
+              </p>
+              <div className="flex gap-2.5 pt-1">
+                <Link to="/" aria-label="Facebook">
+                  <Image
+                    src="https://ik.imagekit.io/xljac05tb/public/facebook.svg?updatedAt=1762241100863"
+                    alt="Facebook"
+                    w={18}
+                    h={18}
+                  />
+                </Link>
+                <Link to="/" aria-label="Instagram">
+                  <Image
+                    src="https://ik.imagekit.io/xljac05tb/public/instagram.svg?updatedAt=1762241100976"
+                    alt="Instagram"
+                    w={18}
+                    h={18}
+                  />
+                </Link>
+              </div>
             </div>
-            <p className="text-sm text-gray-500">
-              {data.user?.bio || "Software engineer sharing backend architecture and tech insights."}
-            </p>
-            <div className="flex gap-2">
-              <Link to="/" aria-label="Facebook (link not yet configured)">
-                <Image src="https://ik.imagekit.io/xljac05tb/public/facebook.svg?updatedAt=1762241100863" alt="Facebook" w={20} h={20} />
+
+            <div className="mt-4 pt-4 border-t border-slate-100">
+              <PostMenuActions post={data} />
+            </div>
+          </div>
+
+          {/* Categories card */}
+          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/60 shadow-sm backdrop-blur-md">
+            <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
+              Categories
+            </h2>
+            <div className="flex flex-wrap lg:flex-col gap-2 text-xs font-medium">
+              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts">
+                All
               </Link>
-              <Link to="/" aria-label="Instagram (link not yet configured)">
-                <Image src="https://ik.imagekit.io/xljac05tb/public/instagram.svg?updatedAt=1762241100976" alt="Instagram" w={20} h={20} />
+              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=web-design">
+                Web Design
+              </Link>
+              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=app-development">
+                App Development
+              </Link>
+              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=databases">
+                Databases
+              </Link>
+              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=seo">
+                SEO
+              </Link>
+              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=marketing">
+                Marketing
               </Link>
             </div>
           </div>
 
-          <PostMenuActions post={data} />
-
-          <h2 className="mt-2 mb-1 text-sm font-medium">Categories</h2>
-          <div className="flex flex-col gap-2 text-sm">
-            <Link className="underline" to="/posts">All</Link>
-            <Link className="underline" to="/posts?cat=web-design">Web Design</Link>
-            <Link className="underline" to="/posts?cat=app-development">App Development</Link>
-            <Link className="underline" to="/posts?cat=database">Database</Link>
-            <Link className="underline" to="/posts?cat=seo">SEO</Link>
-            <Link className="underline" to="/posts?cat=marketing">Marketing</Link>
+          {/* Search Card */}
+          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/60 shadow-sm backdrop-blur-md">
+            <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
+              Search
+            </h2>
+            <Search />
           </div>
-
-          <h2 className="mt-5 mb-2 text-sm font-medium">Search</h2>
-          <Search />
-        </div>
+        </aside>
       </div>
 
       {/* Comments Section */}
-      <Comments postId={data._id} />
-    </div>
+      <div className="mt-12 pt-8 border-t border-slate-200">
+        <Comments postId={data._id} />
+      </div>
+    </article>
   );
 };
 

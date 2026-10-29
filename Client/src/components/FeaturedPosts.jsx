@@ -66,10 +66,10 @@ const FeaturedPosts = () => {
           )}
           <div className="flex items-center gap-4">
             <span className="font-semibold lg:text-lg">01.</span>
-            <Link to={`/posts?cat=${posts[0].category}`} className="text-blue-800 lg:text-lg">
+            <Link to={`/posts?cat=${posts[0].category}`} className="text-blue-500 lg:text-lg">
               {posts[0].category}
             </Link>
-            <span className="text-gray-600">{format(posts[0].createdAt)}</span>
+            <span className="text-gray-900">{format(posts[0].createdAt)}</span>
           </div>
 
           <Link
@@ -96,13 +96,13 @@ const FeaturedPosts = () => {
                   />
                 </div>
               )}
-              <div className="w-2/3">
+              <div className="w-full">
                 <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
                   <span className="font-semibold">0{index + 2}.</span>
-                  <Link to={`/posts?cat=${post.category}`} className="text-blue-800">
+                  <Link to={`/posts?cat=${post.category}`} className="text-blue-500">
                     {post.category}
                   </Link>
-                  <span className="text-gray-600 text-sm">{format(post.createdAt)}</span>
+                  <span className="text-gray-900 text-sm">{format(post.createdAt)}</span>
                 </div>
                 <Link
                   to={`/singlepost/${post.slug}`}

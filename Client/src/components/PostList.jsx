@@ -9,7 +9,7 @@ const fetchPosts = async (pageParam, searchParams) => {
   const searchParamsObj = Object.fromEntries([...searchParams]);
 
   const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts`, {
-    params: { page: pageParam, limit: 10, ...searchParamsObj },
+    params: { ...searchParamsObj, page: pageParam, limit: 10 },
   });
   return res.data;
 };
@@ -19,7 +19,8 @@ const PostList = () => {
   const searchParamsObj = Object.fromEntries([...searchParams]);
 
   const { ref, inView } = useInView({
-    threshold: 0.2,
+    threshold: 0,
+    rootMargin: "300px",
   });
 
   const {

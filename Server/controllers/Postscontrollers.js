@@ -24,7 +24,7 @@ export const getAllPosts = async (req, res) => {
 
     if (author) {
       const user = await Users.findOne({ username: author }).select("_id");
-      if (!user) return res.status(404).json({ message: "Author not found" });
+      if (!user) return res.status(200).json({ posts: [], hasMore: false, nextPage: null });x 
       query.user = user._id;
     }
 
@@ -39,9 +39,9 @@ export const getAllPosts = async (req, res) => {
           break;
         case "trending":
           sortObj = { visits: -1 };
-          query.createdAt = {
-            $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-          };
+          // query.createdAt = {
+          //   $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          // };
           break;
         default:
           break;
