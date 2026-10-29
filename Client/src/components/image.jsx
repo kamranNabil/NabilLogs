@@ -1,14 +1,22 @@
 import { IKImage } from "imagekitio-react";
 
-const Image = ({ src, className, w, h, alt, loading = "lazy", fetchpriority }) => {
+const Image = ({
+  src,
+  className,
+  w,
+  h,
+  alt,
+  loading = "lazy",
+  fetchpriority,
+  onLoad,
+  onError,
+}) => {
   if (!src) return null;
-
-  const endpoint = import.meta.env.VITE_IK_URL_ENDPOINT;
 
   if (src.includes("ik.imagekit.io")) {
     const transformationStr = `tr=w-${w || 400},h-${h || 250},fo-auto,q-80`;
-    const optimizedSrc = src.includes("?") 
-      ? `${src}&${transformationStr}` 
+    const optimizedSrc = src.includes("?")
+      ? `${src}&${transformationStr}`
       : `${src}?${transformationStr}`;
 
     return (
@@ -20,6 +28,8 @@ const Image = ({ src, className, w, h, alt, loading = "lazy", fetchpriority }) =
         height={h}
         loading={loading}
         fetchpriority={fetchpriority}
+        onLoad={onLoad}
+        onError={onError}
       />
     );
   }
@@ -34,6 +44,8 @@ const Image = ({ src, className, w, h, alt, loading = "lazy", fetchpriority }) =
       height={h}
       loading={loading}
       fetchpriority={fetchpriority}
+      onLoad={onLoad}
+      onError={onError}
     />
   );
 };

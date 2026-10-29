@@ -1,12 +1,12 @@
 import Navbar from "../components/Navbar";
-import {Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
     return (
-        <div className="px-4 md:px-8 lg:px-16 lx:px-32  2xl:px-64"> 
-            <Navbar/>
-            <main>
-            <Outlet/>
+        <div className="min-h-screen w-full max-w-full overflow-x-clip bg-[#E6E6FF] flex flex-col justify-between">
+            <Navbar />
+            <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex-1">
+                <Outlet />
             </main>
         </div>
     );

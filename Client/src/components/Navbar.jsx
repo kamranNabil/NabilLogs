@@ -52,7 +52,9 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none transition-all duration-300 ease-out ${
-        isScrolled ? "pt-2 px-3 sm:px-6" : "pt-4 px-3 sm:px-6"
+        isScrolled 
+        ? "pt-0 px-3 sm:px-4 pt-0" 
+        : "pt-3 px-3 sm:px-4 pt-3"
       }`}
     >
       <nav

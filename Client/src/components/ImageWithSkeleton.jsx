@@ -1,5 +1,5 @@
-import { useState } from "react";
-import Image from "./image"; // or your ImageKit / standard <img> component
+import { useState, useRef, useEffect } from "react";
+import Image from "./image";
 
 const ImageWithSkeleton = ({
   src,
@@ -11,9 +11,23 @@ const ImageWithSkeleton = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const containerRef = useRef(null);
+
+  // Handle cached images where onLoad might have already triggered
+  useEffect(() => {
+    if (containerRef.current) {
+      const img = containerRef.current.querySelector("img");
+      if (img && img.complete && img.naturalWidth > 0) {
+        setIsLoaded(true);
+      }
+    }
+  }, [src]);
 
   return (
-    <div className={`relative overflow-hidden ${aspectRatio} ${className}`}>
+    <div
+      ref={containerRef}
+      className={`relative w-full max-w-full overflow-hidden ${aspectRatio} ${className}`}
+    >
       {/* 1. Skeleton Placeholder */}
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 z-10 bg-slate-200 animate-pulse flex items-center justify-center">
@@ -51,7 +65,7 @@ const ImageWithSkeleton = ({
           setHasError(true);
           setIsLoaded(true);
         }}
-        className={`w-full h-full object-cover transition-opacity duration-300 ease-in-out ${
+        className={`w-full h-full object-cover block transition-opacity duration-300 ease-in-out ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       />
