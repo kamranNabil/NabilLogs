@@ -30,6 +30,9 @@ app.use(
 // ✅ JSON parser after webhook routes
 app.use(express.json());
 
+//Disable ETags so response are not cached
+app.set("etag", false);
+
 // ✅ Basic route
 app.get("/login", (req, res) => {
   res.status(200).send("Welcome to NabilLogs API");

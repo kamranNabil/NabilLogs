@@ -6,51 +6,112 @@ import Posts from "../models/Postsmodels.js";
 import Users from "../models/Usermodels.js";
 import slugify from "slugify";
 
-// ✅ Get All Posts (Paginated)
+// ✅ Get All Posts (Paginated & Fuzzy/Alias Filtered)
 export const getAllPosts = async (req, res) => {
   try {
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate",
+    );
+
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+    const limit = parseInt(req.query.limit) || 10;
     const query = {};
 
     const cat = req.query.cat;
     const author = req.query.author;
-    const searchQuery = req.query.search;
-    const sortQuery = req.query.sort;
     const featured = req.query.featured;
+    const searchQuery = req.query.search || req.query.searchQuery;
+    const sortQuery = req.query.sort || req.query.sortQuery;
 
-    if (cat) query.category = cat;
-    if (searchQuery) query.title = { $regex: searchQuery, $options: "i" };
+    const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+    const categoryAliases = {
+      "web-design": ["web", "web design", "webd", "web dev"],
+      "app-development": ["app", "app-development","appd","android","ios","react native","flutter"],
+      "databases": ["databases", "database", "db", "mongodb", "sql", "postgres"],
+      "seo": ["seo", "search engine optimization"],
+      "marketing": ["marketing", "digital marketing", "social media", "mail"],
+    };
+
+    // 1. Safe & Flexible Text Search
+    if (searchQuery && searchQuery.trim() !== "") {
+      const cleanSearch = searchQuery.trim();
+      const searchTerms = cleanSearch.split(/\s+/).filter(Boolean);
+
+      const flexiblePattern = searchTerms.map(escapeRegex).join("[-_\\s]*");
+      const flexibleRegex = new RegExp(flexiblePattern, "i");
+
+      const matchedCategories = [];
+      const lowerSearch = cleanSearch.toLowerCase();
+      for (const [key, aliases] of Object.entries(categoryAliases)) {
+        if (
+          aliases.some(
+            (alias) =>
+              lowerSearch.includes(alias) || alias.includes(lowerSearch),
+          )
+        ) {
+          matchedCategories.push(key, ...aliases);
+        }
+      }
+
+      const tokenRegexes = searchTerms.map(
+        (term) => new RegExp(escapeRegex(term), "i"),
+      );
+
+      query.$or = [
+        { title: { $regex: flexibleRegex } },
+        { desc: { $regex: flexibleRegex } },
+        { category: { $regex: flexibleRegex } },
+        ...(matchedCategories.length > 0
+          ? [
+              {
+                category: {
+                  $in: matchedCategories.map(
+                    (c) => new RegExp(`^${escapeRegex(c)}$`, "i"),
+                  ),
+                },
+              },
+            ]
+          : []),
+        { $and: tokenRegexes.map((reg) => ({ title: { $regex: reg } })) },
+      ];
+    }
+
+    // 2. Category Filter (Dropdown / Pill navigation)
+    if (cat && cat !== "all") {
+      const lowerCat = cat.toLowerCase().trim();
+      const variations = categoryAliases[lowerCat] || [
+        lowerCat,
+        lowerCat.replace(/[-_]/g, " "),
+        lowerCat.replace(/\s+/g, "-"),
+      ];
+
+      query.category = {
+        $in: variations.map((v) => new RegExp(`^${escapeRegex(v)}$`, "i")),
+      };
+    }
+
+    // 3. Author Filter
     if (author) {
       const user = await Users.findOne({ username: author }).select("_id");
-      if (!user) return res.status(200).json({ posts: [], hasMore: false, nextPage: null });x 
+      if (!user) {
+        return res
+          .status(200)
+          .json({ posts: [], hasMore: false, nextPage: null });
+      }
       query.user = user._id;
     }
 
-    let sortObj = { createdAt: -1 };
-    if (sortQuery) {
-      switch (sortQuery) {
-        case "newest":
-          sortObj = { createdAt: -1 };
-          break;
-        case "oldest":
-          sortObj = { createdAt: 1 };
-          break;
-        case "trending":
-          sortObj = { visits: -1 };
-          // query.createdAt = {
-          //   $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-          // };
-          break;
-        default:
-          break;
-      }
-    }
-
+    // 4. Featured Filter
     if (featured) {
       query.isFeatured = featured === "true";
     }
+
+    // 5. Sorting
+    let sortObj = { createdAt: -1 };
+    if (sortQuery === "oldest") sortObj = { createdAt: 1 };
+    if (sortQuery === "trending") sortObj = { visits: -1, createdAt: -1 };
 
     const posts = await Posts.find(query)
       .populate("user", "username img")
@@ -95,7 +156,6 @@ export const createPost = async (req, res) => {
   try {
     let authorId;
 
-    // Check if user was resolved from token
     if (req.user) {
       authorId = req.user._id || req.user.id;
     } else {
@@ -197,6 +257,10 @@ export const uploadAuth = async (req, res) => {
   try {
     const imagekit = getImageKit();
     const result = imagekit.getAuthenticationParameters();
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate",
+    );
     res.json(result);
   } catch (err) {
     console.error("ImageKit error:", err.message);

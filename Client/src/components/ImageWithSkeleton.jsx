@@ -13,7 +13,7 @@ const ImageWithSkeleton = ({
   const [hasError, setHasError] = useState(false);
   const containerRef = useRef(null);
 
-  // Handle cached images where onLoad might have already triggered
+  // Cache fallback: if image was already in browser memory, immediately mark as loaded
   useEffect(() => {
     if (containerRef.current) {
       const img = containerRef.current.querySelector("img");

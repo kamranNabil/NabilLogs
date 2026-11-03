@@ -1,5 +1,5 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const Search = () => {
   const location = useLocation();
@@ -8,25 +8,24 @@ const Search = () => {
   const currentSearch = searchParams.get("search") || "";
   const [query, setQuery] = useState(currentSearch);
 
+  // Synchronize input value with browser URL changes (e.g., Back/Forward or query clear)
   useEffect(() => {
     setQuery(currentSearch);
   }, [currentSearch]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const trimmed = (query || "").trim();
+    const trimmed = query.trim();
 
-    const isPostsPage = location.pathname
-      ? location.pathname.startsWith("/posts")
-      : false;
-
+    // Preserve existing filters if already on /posts, otherwise start clean
+    const isPostsPage = location.pathname ? location.pathname.startsWith("/posts") : false;
     const newParams = isPostsPage
       ? new URLSearchParams(searchParams)
       : new URLSearchParams();
 
     if (trimmed) {
       newParams.set("search", trimmed);
-      newParams.delete("page");
+      newParams.delete("page"); // Reset pagination back to page 1 on new search
     } else {
       newParams.delete("search");
     }
@@ -34,16 +33,10 @@ const Search = () => {
     navigate(`/posts?${newParams.toString()}`);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleSearch(event);
-    }
-  };
-
   return (
     <form
       onSubmit={handleSearch}
-      className="flex items-center gap-2 bg-slate-100/80 px-3 py-2 rounded-full"
+      className="flex items-center gap-2 bg-slate-100/80 px-3 py-2 rounded-xl border border-slate-200/70 focus-within:border-[#099DFF] focus-within:bg-white transition-all shadow-inner"
     >
       <svg
         className="w-4 h-4 text-slate-400 shrink-0"
@@ -62,7 +55,6 @@ const Search = () => {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={handleKeyDown}
         placeholder="Search posts..."
         className="bg-transparent text-sm text-slate-800 placeholder-slate-400 w-full outline-none"
       />

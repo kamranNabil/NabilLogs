@@ -1,5 +1,3 @@
-import { IKImage } from "imagekitio-react";
-
 const Image = ({
   src,
   className,
