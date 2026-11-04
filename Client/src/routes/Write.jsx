@@ -53,7 +53,7 @@ const Write = () => {
       {!currentUser && (
         <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl mt-8 flex items-center justify-between">
           <p className="text-xs text-blue-700">
-            Wanna publish as guest. Enter your name or post anonymously.
+            Wanna publish about something? Enter your name or post anonymously.
           </p>
           <input
             type="text"

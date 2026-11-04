@@ -206,7 +206,7 @@ const SinglePost = () => {
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-slate-100">
+              <div className="mt-4 pt-2 border-t border-slate-400">
                 <PostMenuActions post={data} />
               </div>
             </div>
