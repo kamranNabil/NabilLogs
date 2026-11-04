@@ -105,7 +105,6 @@ NabilLogs/
     └── package.json
 ```
 
-
 ```
 ## ⚙️ Local Development Setup
 
@@ -168,20 +167,35 @@ The app runs at http://localhost:5173.
 
 ## 📡 API Endpoints
 
-#	Method	Endpoint	Description	Access
-1	POST	/auth/register	Register a new user (hashed password)	Public
-2	POST	/auth/login	Log in and return a signed JWT	Public
-3	GET	/posts	Paginated posts with search, category and sort filters	Public
-4	GET	/posts/:slug	Get one post by slug and increment view count	Public / Optional Auth
-5	POST	/posts	Create and publish a post	Authenticated
-6	DELETE	/posts/:id	Delete a post	Author / Admin
-7	PATCH	/posts/feature	Toggle featured status	Admin
-8	GET	/comments/:postId	Get comments for a post	Public
-9	POST	/comments/:postId	Add a comment	Authenticated
-10	DELETE	/comments/:id	Delete a comment	Comment Author / Admin
-11	GET	/users/saved	Get the current user's saved posts	Authenticated
-12	PATCH	/users/save	Toggle save/bookmark on a post	Authenticated
-13	GET	/posts/upload-auth	Generate ImageKit upload signature	Authenticated
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| #  | Method | Endpoint           | Description                                            | Access                 |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 1  | POST   | /auth/register     | Register a new user (hashed password)                  | Public                 |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 2  | POST   | /auth/login        | Log in and return a signed JWT                         | Public                 |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 3  | GET    | /posts             | Paginated posts with search, category and sort filters | Public                 |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 4  | GET    | /posts/:slug       | Get one post by slug and increment view count          | Public / Optional Auth |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 5  | POST   | /posts             | Create and publish a post                              | Authenticated          |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 6  | DELETE | /posts/:id         | Delete a post                                          | Author / Admin         |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 7  | PATCH  | /posts/feature     | Toggle featured status                                 | Admin                  |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 8  | GET    | /comments/:postId  | Get comments for a post                                | Public                 |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 9  | POST   | /comments/:postId  | Add a comment                                          | Authenticated          |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 10 | DELETE | /comments/:id      | Delete a comment                                       | Comment Author / Admin |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 11 | GET    | /users/saved       | Get the current user's saved posts                     | Authenticated          |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 12 | PATCH  | /users/save        | Toggle save/bookmark on a post                         | Authenticated          |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
+| 13 | GET    | /posts/upload-auth | Generate ImageKit upload signature                     | Authenticated          |
++----+--------+--------------------+--------------------------------------------------------+------------------------+
 
 ## 📄 License
 
