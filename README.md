@@ -105,90 +105,85 @@ NabilLogs/
     └── package.json
 ```
 
+## ⚙️ Local Development Setup
 
 ```
-⚙️ Local Development Setup
-1. Clone the Repository
-Bash
-git clone [https://github.com/kamranNabil/NabilLogs.git](https://github.com/kamranNabil/NabilLogs.git)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/kamranNabil/NabilLogs.git
 cd NabilLogs
+```
 
+### 2. Backend (`/Server`)
 
-2. Backend Configuration (/Server)
-Bash
+```bash
 cd Server
 npm install
-Create a .env file in the /Server folder:
+```
 
+Create `Server/.env`:
 
-Code snippet
+```env
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-IMAGEKIT_URL_ENDPOINT=[https://ik.imagekit.io/your_endpoint](https://ik.imagekit.io/your_endpoint)
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_endpoint
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
 CLIENT_URL=http://localhost:5173
+```
 
+Start the server:
 
-Start the backend server:
-Bash
+```bash
 npm run dev
+```
 
+### 3. Frontend (`/Client`)
 
-3. Frontend Configuration (/Client)
-Open a new terminal tab and navigate to /Client:
+In a new terminal:
 
-Bash
+```bash
 cd Client
 npm install
+```
 
+Create `Client/.env`:
 
-Create a .env file in the /Client folder:
-
-
-Code snippet
+```env
 VITE_API_URL=http://localhost:3000
-VITE_IMAGEKIT_URL_ENDPOINT=[https://ik.imagekit.io/your_endpoint](https://ik.imagekit.io/your_endpoint)
+VITE_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_endpoint
 VITE_IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
-Start the Vite development server:
+```
 
+Start the dev server:
 
-Bash
+```bash
 npm run dev
-The application will run locally at http://localhost:5173.
+```
 
-📡 API Endpoints
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-|  # | Method |  Route / Endpoint  |                                  Description                                  |            Auth / Access           |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 1  | POST   | /auth/register     | Register a new user account with hashed password                              | Public                             |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 2  | POST   | /auth/login        | Authenticate credentials and return signed JWT                                | Public                             |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 3  | GET    | /posts             | Fetch paginated posts with search query, category, and sorting filters (sort) | Public                             |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 4  | GET    | /posts/:slug       | Retrieve a single post by slug and increment view count                       | Public / Optional Auth             |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 5  | POST   | /posts             | Create and publish a new post                                                 | Authenticated (verifyAuth)         |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 6  | DELETE | /posts/:id         | Delete a post by ID                                                           | Protected (Author / Admin)         |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 7  | PATCH  | /posts/feature     | Toggle featured status of a post                                              | Protected (Admin)                  |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 8  | GET    | /comments/:postId  | Fetch all comments associated with a specific post                            | Public                             |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 9  | POST   | /comments/:postId  | Add a comment to an article                                                   | Authenticated (verifyAuth)         |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 10 | DELETE | /comments/:id      | Delete a comment by ID                                                        | Protected (Comment Author / Admin) |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 11 | GET    | /users/saved       | Fetch list of posts bookmarked/saved by the current user                      | Authenticated (verifyAuth)         |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 12 | PATCH  | /users/save        | Toggle post bookmark/save state for the authenticated user                    | Authenticated (verifyAuth)         |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-| 13 | GET    | /posts/upload-auth | Generate ImageKit client-side upload security signature                       | Authenticated (verifyAuth)         |
-+----+--------+--------------------+-------------------------------------------------------------------------------+------------------------------------+
-📄 License
-This project is open-source and available under the MIT License.
+The app runs at http://localhost:5173.
 
-Copyright (c) 2026 Md. Nabil Kamran
+## 📡 API Endpoints
+
+| # | Method | Endpoint | Description | Access |
+|---|--------|----------|-------------|--------|
+| 1 | POST | `/auth/register` | Register a new user (hashed password) | Public |
+| 2 | POST | `/auth/login` | Log in and return a signed JWT | Public |
+| 3 | GET | `/posts` | Paginated posts with search, category and sort filters | Public |
+| 4 | GET | `/posts/:slug` | Get one post by slug and increment view count | Public / Optional Auth |
+| 5 | POST | `/posts` | Create and publish a post | Authenticated |
+| 6 | DELETE | `/posts/:id` | Delete a post | Author / Admin |
+| 7 | PATCH | `/posts/feature` | Toggle featured status | Admin |
+| 8 | GET | `/comments/:postId` | Get comments for a post | Public |
+| 9 | POST | `/comments/:postId` | Add a comment | Authenticated |
+| 10 | DELETE | `/comments/:id` | Delete a comment | Comment Author / Admin |
+| 11 | GET | `/users/saved` | Get the current user's saved posts | Authenticated |
+| 12 | PATCH | `/users/save` | Toggle save/bookmark on a post | Authenticated |
+| 13 | GET | `/posts/upload-auth` | Generate ImageKit upload signature | Authenticated |
+
+## 📄 License
+
+MIT License. Copyright (c) 2026 Md. Nabil Kamran
