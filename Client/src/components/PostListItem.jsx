@@ -5,7 +5,7 @@ import ImageWithSkeleton from "./ImageWithSkeleton";
 
 const PostListItem = ({ post }) => {
   return (
-    <article className="flex flex-col xl:flex-row gap-6 mb-10 pb-8 border-b border-slate-200/80 last:border-none">
+    <article className="flex flex-col xl:flex-row gap-6 pb-6 border-b border-slate-200/80 last:border-none">
       {/* 1. Thumbnail: fixed 16:9 aspect ratio prevents squashing */}
       {post.img ? (
         <div className="w-full xl:w-2/5 shrink-0">

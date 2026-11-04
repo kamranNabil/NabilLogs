@@ -27,7 +27,7 @@ export const getAllPosts = async (req, res) => {
     const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     const categoryAliases = {
-      "web-design": ["web", "web design", "webd", "web dev"],
+      "web-design": ["web", "web-design", "webd", "web dev"],
       "app-development": ["app", "app-development","appd","android","ios","react native","flutter"],
       "databases": ["databases", "database", "db", "mongodb", "sql", "postgres"],
       "seo": ["seo", "search engine optimization"],

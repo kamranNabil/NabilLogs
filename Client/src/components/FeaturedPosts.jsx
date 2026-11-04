@@ -47,7 +47,7 @@ const FeaturedPosts = () => {
   if (!posts || posts.length === 0) return null;
 
   return (
-    <div className="mt-8 flex flex-col gap-4">
+    <div className="mt-4 flex flex-col gap-4">
       <h2 className="text-2xl font-bold text-gray-800">Featured Posts</h2>
 
       <div className="flex flex-col lg:flex-row gap-8">
