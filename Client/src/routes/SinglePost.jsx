@@ -66,15 +66,18 @@ const SinglePost = () => {
         {data.img && <meta property="og:image" content={data.img} />}
       </Helmet>
 
-      {/* Post Header / Meta */}
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start justify-between">
-        <div className="w-full lg:w-3/5 flex flex-col gap-3">
+      {/* Main Grid */}
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+
+        {/* LEFT COLUMN: Title, Meta, Desc, and the Article Body */}
+        <div className="w-full lg:w-[70%] xl:w-[72%] flex flex-col">
+          {/* Post Heading */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight text-slate-900 leading-snug">
             {data.title}
           </h1>
 
-          {/* Clean, wrapped metadata row */}
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-slate-500 font-medium pt-1">
+          {/* Metadata Row */}
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-slate-500 font-medium pt-2 pb-3 border-b border-slate-200/60">
             <span>Written by</span>
             <Link
               to={`/posts?author=${data.user?.username}`}
@@ -95,139 +98,153 @@ const SinglePost = () => {
             <span className="text-slate-400">{getReadTime(data.content)}</span>
           </div>
 
+          {/* Description Lead */}
           {data.desc && (
-            <p className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed mt-1">
+            <p className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed mt-4 mb-6">
               {data.desc}
             </p>
           )}
+
+          {/* Mobile Image: Only renders here on small screens */}
+          {data.img && (
+            <div className="block lg:hidden w-full mb-6">
+              <ImageWithSkeleton
+                src={data.img}
+                alt={data.title}
+                aspectRatio="aspect-[16/9]"
+                className="rounded-2xl shadow-sm"
+                w="700"
+                h="450"
+              />
+            </div>
+          )}
+
+          {/* Content Body: Flows seamlessly in the left column beside the desktop image */}
+          <div
+            className="
+              w-full text-slate-700 text-base sm:text-lg leading-relaxed
+              space-y-4 break-words text-left pt-2 lg:pt-4 border-t border-slate-100 lg:border-t-0
+              prose prose-slate max-w-none
+              [&_p]:mb-4 [&_p]:leading-relaxed
+              [&_h2]:text-xl sm:[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_h2]:mt-8 [&_h2]:mb-3
+              [&_h3]:text-lg sm:[&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-slate-900 [&_h3]:mt-6 [&_h3]:mb-2
+              [&_pre]:bg-slate-900 [&_pre]:text-slate-100 [&_pre]:p-4 [&_pre]:rounded-2xl [&_pre]:overflow-x-auto
+              [&_code]:text-sm [&_code]:font-mono
+              [&_a]:text-[#099DFF] [&_a]:underline
+              [&_img]:rounded-2xl [&_img]:shadow-sm
+            "
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.content) }}
+          />
         </div>
 
-        {/* Hero image — shown on all viewports */}
-        {data.img && (
-          <div className="w-full lg:w-2/5 shrink-0">
-            <ImageWithSkeleton
-              src={data.img}
-              alt={data.title}
-              aspectRatio="aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3]"
-              className="rounded-2xl shadow-sm"
-              w="700"
-              h="450"
-            />
-          </div>
-        )}
-      </div>
+        {/* RIGHT COLUMN: Desktop Hero Image + Sticky Sidebar */}
+        <aside className="w-full lg:w-[30%] xl:w-[28%] max-w-sm flex flex-col gap-5 lg:sticky lg:top-24 self-start">
+          {/* Desktop Image */}
+          {data.img && (
+            <div className="hidden lg:block w-full">
+              <ImageWithSkeleton
+                src={data.img}
+                alt={data.title}
+                aspectRatio="aspect-[16/10] xl:aspect-[4/3]"
+                className="rounded-2xl shadow-sm"
+                w="700"
+                h="450"
+              />
+            </div>
+          )}
 
-      {/* Main Content Body & Sidebar */}
-      <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 mt-10">
-        {/* Article text: removed text-justify to fix awkward word gaps */}
-        <div
-          className="
-            w-full lg:w-3/4
-            text-slate-700 text-base sm:text-lg leading-relaxed
-            space-y-4 break-words text-left
-            prose prose-slate max-w-none
-            [&_p]:mb-4 [&_p]:leading-relaxed
-            [&_h2]:text-xl sm:[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_h2]:mt-8 [&_h2]:mb-3
-            [&_h3]:text-lg sm:[&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-slate-900 [&_h3]:mt-6 [&_h3]:mb-2
-            [&_pre]:bg-slate-900 [&_pre]:text-slate-100 [&_pre]:p-4 [&_pre]:rounded-2xl [&_pre]:overflow-x-auto
-            [&_code]:text-sm [&_code]:font-mono
-            [&_a]:text-[#099DFF] [&_a]:underline
-            [&_img]:rounded-2xl [&_img]:shadow-sm
-          "
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.content) }}
-        />
-
-        {/* Sidebar Menu */}
-        <aside className="w-full lg:w-1/4 flex flex-col gap-6 sticky top-24 self-start">
-          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
-            <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
-              Author
-            </h2>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                {data.user?.img ? (
-                  <Image
-                    src={data.user.img}
-                    alt={`${data.user.username || "Author"}'s avatar`}
-                    className="w-10 h-10 rounded-full object-cover shadow-sm"
-                    w="40"
-                    h="40"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-[#099DFF] text-white flex items-center justify-center text-sm font-bold uppercase shadow-sm">
-                    {data.user?.username?.[0] || "A"}
+          {/* Author Card */}
+          <div className="flex flex-col w-full gap-6">
+            <div className="p-3 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
+              <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
+                Author
+              </h2>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  {data.user?.img ? (
+                    <Image
+                      src={data.user.img}
+                      alt={`${data.user.username || "Author"}'s avatar`}
+                      className="w-10 h-10 rounded-full object-cover shadow-sm"
+                      w="40"
+                      h="40"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-[#099DFF] text-white flex items-center justify-center text-sm font-bold uppercase shadow-sm">
+                      {data.user?.username?.[0] || "A"}
+                    </div>
+                  )}
+                  <div>
+                    <Link
+                      to={`/posts?author=${data.user?.username}`}
+                      className="text-slate-900 hover:text-[#099DFF] font-semibold text-sm transition"
+                    >
+                      {data.user?.username || "Guest Writer"}
+                    </Link>
                   </div>
-                )}
-                <div>
-                  <Link
-                    to={`/posts?author=${data.user?.username}`}
-                    className="text-slate-900 hover:text-[#099DFF] font-semibold text-sm transition"
-                  >
-                    {data.user?.username || "Guest Writer"}
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {data.user?.bio || "Software engineer sharing backend architecture and tech insights."}
+                </p>
+                <div className="flex gap-2.5 pt-1">
+                  <Link to="/" aria-label="Facebook">
+                    <Image
+                      src="https://ik.imagekit.io/xljac05tb/public/facebook.svg?updatedAt=1762241100863"
+                      alt="Facebook"
+                      w={18}
+                      h={18}
+                    />
+                  </Link>
+                  <Link to="/" aria-label="Instagram">
+                    <Image
+                      src="https://ik.imagekit.io/xljac05tb/public/instagram.svg?updatedAt=1762241100976"
+                      alt="Instagram"
+                      w={18}
+                      h={18}
+                    />
                   </Link>
                 </div>
               </div>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                {data.user?.bio || "Software engineer sharing backend architecture and tech insights."}
-              </p>
-              <div className="flex gap-2.5 pt-1">
-                <Link to="/" aria-label="Facebook">
-                  <Image
-                    src="https://ik.imagekit.io/xljac05tb/public/facebook.svg?updatedAt=1762241100863"
-                    alt="Facebook"
-                    w={18}
-                    h={18}
-                  />
+
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <PostMenuActions post={data} />
+              </div>
+            </div>
+
+            {/* Categories Card */}
+            <div className="p-3 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
+              <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
+                Categories
+              </h2>
+              <div className="flex flex-wrap lg:flex-col gap-2 text-xs font-medium">
+                <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts">
+                  All
                 </Link>
-                <Link to="/" aria-label="Instagram">
-                  <Image
-                    src="https://ik.imagekit.io/xljac05tb/public/instagram.svg?updatedAt=1762241100976"
-                    alt="Instagram"
-                    w={18}
-                    h={18}
-                  />
+                <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=web-design">
+                  Web Design
+                </Link>
+                <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=app-development">
+                  App Development
+                </Link>
+                <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=databases">
+                  Databases
+                </Link>
+                <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=seo">
+                  SEO
+                </Link>
+                <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=marketing">
+                  Marketing
                 </Link>
               </div>
             </div>
 
-            <div className="mt-4 pt-4 border-t border-slate-100">
-              <PostMenuActions post={data} />
+            {/* Search Card */}
+            <div className="p-3 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
+              <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
+                Search
+              </h2>
+              <Search />
             </div>
-          </div>
-
-          {/* Categories card */}
-          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
-            <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
-              Categories
-            </h2>
-            <div className="flex flex-wrap lg:flex-col gap-2 text-xs font-medium">
-              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts">
-                All
-              </Link>
-              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=web-design">
-                Web Design
-              </Link>
-              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=app-development">
-                App Development
-              </Link>
-              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=databases">
-                Databases
-              </Link>
-              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=seo">
-                SEO
-              </Link>
-              <Link className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#099DFF] hover:text-white transition" to="/posts?cat=marketing">
-                Marketing
-              </Link>
-            </div>
-          </div>
-
-          {/* Search Card */}
-          <div className="p-5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-md">
-            <h2 className="mb-3 text-xs uppercase tracking-wider text-slate-400 font-bold">
-              Search
-            </h2>
-            <Search />
           </div>
         </aside>
       </div>
