@@ -60,7 +60,7 @@ const Navbar = () => {
       <nav
         className="
           pointer-events-auto
-          w-full max-w-5xl h-14 sm:h-16 md:h-18 px-4 sm:px-6
+          w-full max-w-6xl h-14 sm:h-16 md:h-18 px-4 sm:px-6
           flex items-center justify-between
           rounded-full
           bg-white/70 backdrop-blur-xl saturate-150
